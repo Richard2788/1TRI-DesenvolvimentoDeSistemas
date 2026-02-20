@@ -1,6 +1,8 @@
 ### Atividade 1 - Nivelamento ###
 # Objetivo: Criar sua autodescrição utilizando variáveis e função print().
 # 1 - Pesquise o que é autodescrição e para quê ela serve.
+# Autodescrição: a pessoa descreve a si mesma, sua aparência, expressões faciais, gestos e outros elementos visuais que ajudam na comunicação e compreensão do contexto para as pessoas com deficiência. Permite uma conexão com o público e torna a apresentação mais pessoal e acessível.
+
 # 2 - Crie as seguintes variáveis:
 nome = "Richard"
 idade = 16
@@ -26,4 +28,5 @@ print(f"Olá, meu nome é {nome}, tenho {idade} anos e tenho {altura} metros de 
 # TOTAL: 2,0 pontos
 
 ## Entrega: ##
+
 # O aluno deve criar um novo repositório no GitHub, com o nome "1TRI-DesenvolvimentoSistemas" e realizar upload do arquivo .py.
