@@ -1,0 +1,12 @@
+MARV, Mammoth Tank, Juggernaut, Zone Trooper, 
+Hammerhead, Orca, Firehawk, Shatterer, Rig, Commando, 
+Titan, Wolverine, Behemoth, Zone Raider, Zone Shatterer, 
+Slingshot, Redeemer, Avatar, Stealth Tank, Black Hand, 
+Specter, Venom, Beam Cannon, Flame Tank, Shadow Team, 
+Reckoner, Purifier, Confessor Cabal, Mantis, The Awakened, 
+The Enlightened, Tiberium Trooper, Eradicator Hexapod, 
+Annihilator Tripod, Devastator Warship, 
+Planetary Assault Carrier, Mechapede, Stormrider, 
+Devourer Tank, Corruptor, Shock Troopers, Mastermind, 
+Mothership, Reaper Tripod, Shard Walker, Cultists, Prodigy, 
+Ravager, Buzzer, Gun Walker
