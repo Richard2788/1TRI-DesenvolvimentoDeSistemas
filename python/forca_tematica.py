@@ -3,7 +3,7 @@ import random
 numero = random.randint(0, 50)
 letras_acertadas = []
 item = []
-arquivo = open("jojo.txt", "r")
+arquivo = open("jojo1_1.txt", "r")
 for linha in arquivo:
     item.append(linha.strip())
 
@@ -11,7 +11,10 @@ palavra = item[numero]
 print(palavra)
 
 for letra in palavra:
-    letras_acertadas.append("_")
+    if (letra != " "):
+        letras_acertadas.append("_")
+    else:
+        letras_acertadas.append(" ")
 
 acertou = False
 enforcou = False
@@ -33,7 +36,7 @@ while(not acertou and not enforcou):
     chute = input("Digite uma letra: ")
     i = 0
     for letra in palavra:
-        if (chute.upper() == letra):
+        if (chute.upper() == letra.upper()):
              letras_acertadas[i] = letra
         i = (i + 1)
 
