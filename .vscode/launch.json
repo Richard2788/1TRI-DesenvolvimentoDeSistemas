@@ -1,17 +1,29 @@
-{
-    // Use o IntelliSense para saber mais sobre os atributos possíveis.
-    // Focalizar para exibir as descrições dos atributos existentes.
-    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python Debugger: Python File",
-            "type": "debugpy",
+
+ {
+     // Use o IntelliSense para saber mais sobre os atributos possíveis.
+     // Focalizar para exibir as descrições dos atributos existentes.
+     // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+     "version": "0.2.0",
+     "configurations": [
+         {
+            "name": "Launch Current JavaScript File",
+            "type": "node",
             "request": "launch",
             "program": "${file}",
+            "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
-            "cwd": "${fileDirname}",  // <--- ESSA LINHA É A CHAVE
-            "justMyCode": true
-        }
+             "skipFiles": [
+                 "<node_internals>/**"
+            ]
+         },
+         {
+            "name": "Launch Current Python File",
+            "type": "debugpy",
+             "request": "launch",
+             "program": "${file}",
+             "console": "integratedTerminal",
+            "cwd": "${fileDirname}",
+             "justMyCode": true
+         }
     ]
-}
+ }

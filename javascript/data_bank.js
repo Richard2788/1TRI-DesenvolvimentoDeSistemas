@@ -48,7 +48,7 @@ const jogos = [
         titulo: "Título do Jogo",
         estudios: "Estúdios",
         ano: 9999,
-        genero: 'Gênero 1, Gênero 2',
+        generos: 'Gênero 1, Gênero 2',
         plataformas: 'Microsoft Windows, Xbox 360',
         sinopse: "O ano é 2047. Uma enorme bola de fogo nuclear explode no céu noturno, marcando o início dramático da Terceira Guerra de Tiberium e o tão esperado retorno da franquia de estratégia em tempo real mais inovadora de todos os tempos.",
         preco: 32.99
