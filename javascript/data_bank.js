@@ -14,7 +14,7 @@ const modelo = {
     plataformas: 'Microsoft Windows, Xbox 360',
     sinopse: "O ano é 2047. Uma enorme bola de fogo nuclear explode no céu noturno, marcando o início dramático da Terceira Guerra de Tiberium e o tão esperado retorno da franquia de estratégia em tempo real mais inovadora de todos os tempos.",
     preco: 32.99
-}
+};
 
 const jogos = [
     {
@@ -107,21 +107,21 @@ const jogos = [
         sinopse: "Sonic deve restaurar o mundo após ser fragmentado, alternando entre velocidade extrema durante o dia e combates mais pesados à noite em sua forma Werehog.",
         preco: 49.95
     }
-]
+];
 
 function criarArquivo(dados){
     const jogosJSON = JSON.stringify(dados)
     const fs = require('fs');
     fs.writeFileSync("jogos.json", jogosJSON);
-}
-criarArquivo(jogos)
+};
+criarArquivo(jogos);
 
 let arquivo
 function lerArquivo(){
     arquivo = require("./jogos.json")
     console.log(arquivo)
-}
-lerArquivo()
+};
+lerArquivo();
 
 function mostrarJogos(lista){
     console.log("##### ESTOQUE DE JOGOS #####")
@@ -135,8 +135,8 @@ function mostrarJogos(lista){
                     jogo.preco.toFixed(2).replaceAll(".",",") +
                     "\n------------")
     })
-}
-mostrarJogos(arquivo)
+};
+mostrarJogos(arquivo);
 
 jogos.push({
     titulo: "Resident Evil 4 Remake",
@@ -146,15 +146,15 @@ jogos.push({
     plataformas: 'PS4 (PS5 via retrocompatibilidade), Xbox One (Series X|S via retrocompatibilidade), PC',
     sinopse: "Reviva a icônica aventura de Leon S. Kennedy em uma vila europeia infestada de inimigos grotescos, com gráficos modernizados, jogabilidade aprimorada e novos elementos de história.",
     preco: 299.90
-})
-criarArquivo(jogos)
-lerArquivo()
-mostrarJogos(arquivo)
+});
+criarArquivo(jogos);
+lerArquivo();
+mostrarJogos(arquivo);
 
 let jogosFiltrados = arquivo.filter((jogo) => jogo.preco < 100)
-mostrarJogos(jogosFiltrados)
+mostrarJogos(jogosFiltrados);
 
 let jogosDesconto = arquivo.map((jogo) => {
     return {...jogo, preco: jogo.preco * 0.67}
-})
-mostrarJogos(jogosDesconto)
+});
+mostrarJogos(jogosDesconto);
