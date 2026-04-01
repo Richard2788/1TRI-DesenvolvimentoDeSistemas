@@ -115,7 +115,7 @@ function criarArquivo(dados){
     fs.writeFileSync("jogos.json", jogosJSON);
 }
 criarArquivo(jogos)
-//criarArquivo(jogos)
+
 let arquivo
 function lerArquivo(){
     arquivo = require("./jogos.json")
