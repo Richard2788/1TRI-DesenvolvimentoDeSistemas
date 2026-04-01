@@ -149,6 +149,7 @@ jogos.push({
 })
 criarArquivo(jogos)
 lerArquivo()
+mostrarJogos(arquivo)
 
 let jogosFiltrados = arquivo.filter((jogo) => jogo.preco < 100)
 mostrarJogos(jogosFiltrados)
