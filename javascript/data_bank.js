@@ -138,6 +138,18 @@ function mostrarJogos(lista){
 }
 mostrarJogos(arquivo)
 
+jogos.push({
+    titulo: "Resident Evil 4 Remake",
+    estudios: "Capcom",
+    ano: 2023,
+    generos: 'Terror de sobrevivência, Ação',
+    plataformas: 'PS4 (PS5 via retrocompatibilidade), Xbox One (Series X|S via retrocompatibilidade), PC',
+    sinopse: "Reviva a icônica aventura de Leon S. Kennedy em uma vila europeia infestada de inimigos grotescos, com gráficos modernizados, jogabilidade aprimorada e novos elementos de história.",
+    preco: 299.90
+})
+criarArquivo(jogos)
+lerArquivo()
+
 let jogosFiltrados = arquivo.filter((jogo) => jogo.preco < 100)
 mostrarJogos(jogosFiltrados)
 
