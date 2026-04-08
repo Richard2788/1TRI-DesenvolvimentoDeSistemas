@@ -114,14 +114,12 @@ function criarArquivo(dados){
     const fs = require('fs');
     fs.writeFileSync("jogos.json", jogosJSON);
 };
-criarArquivo(jogos);
 
 let arquivo
 function lerArquivo(){
     arquivo = require("./jogos.json")
     console.log(arquivo)
 };
-lerArquivo();
 
 function mostrarJogos(lista){
     console.log("##### ESTOQUE DE JOGOS #####")
@@ -136,9 +134,15 @@ function mostrarJogos(lista){
                     "\n------------")
     })
 };
-mostrarJogos(arquivo);
 
-jogos.push({
+function adicionarJogo(obj, n_jogo){
+    obj.push(n_jogo)
+};
+
+criarArquivo(jogos);
+lerArquivo();
+mostrarJogos(arquivo);
+adicionarJogo(jogos, ({
     titulo: "Resident Evil 4 Remake",
     estudios: "Capcom",
     ano: 2023,
@@ -146,7 +150,9 @@ jogos.push({
     plataformas: 'PS4 (PS5 via retrocompatibilidade), Xbox One (Series X|S via retrocompatibilidade), PC',
     sinopse: "Reviva a icônica aventura de Leon S. Kennedy em uma vila europeia infestada de inimigos grotescos, com gráficos modernizados, jogabilidade aprimorada e novos elementos de história.",
     preco: 299.90
-});
+}));
+console.log(jogos[jogos.length])
+
 criarArquivo(jogos);
 lerArquivo();
 mostrarJogos(arquivo);
@@ -158,3 +164,4 @@ let jogosDesconto = arquivo.map((jogo) => {
     return {...jogo, preco: jogo.preco * 0.67}
 });
 mostrarJogos(jogosDesconto);
+console.log(jogos[jogos.length - 1])
