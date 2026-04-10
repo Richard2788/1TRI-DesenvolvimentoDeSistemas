@@ -1,3 +1,4 @@
+const fs = require('fs');
 /*
 Exercício 2 (vale nota)
 CRIAR UM "BANCO DE DADOS" DE ALGUMA DAS SEGUINTES CATEGORIAS:
@@ -111,15 +112,21 @@ const jogos = [
 
 function criarArquivo(dados){
     const jogosJSON = JSON.stringify(dados)
-    const fs = require('fs');
     fs.writeFileSync("jogos.json", jogosJSON);
 };
 
 let arquivo
 function lerArquivo(){
+    let dados = fs.readFileSync('jogos.json')
+    arquivo = JSON.parse(dados)
+    console.log(arquivo)
+};
+/* ANTIGO
+function lerArquivo(){
     arquivo = require("./jogos.json")
     console.log(arquivo)
 };
+*/
 
 function mostrarJogos(lista){
     console.log("##### ESTOQUE DE JOGOS #####")
@@ -141,6 +148,7 @@ function adicionarJogo(obj, n_jogo){
 
 criarArquivo(jogos);
 lerArquivo();
+console.log(arquivo)
 mostrarJogos(arquivo);
 adicionarJogo(jogos, ({
     titulo: "Resident Evil 4 Remake",
@@ -148,10 +156,9 @@ adicionarJogo(jogos, ({
     ano: 2023,
     generos: 'Terror de sobrevivência, Ação',
     plataformas: 'PS4 (PS5 via retrocompatibilidade), Xbox One (Series X|S via retrocompatibilidade), PC',
-    sinopse: "Reviva a icônica aventura de Leon S. Kennedy em uma vila europeia infestada de inimigos grotescos, com gráficos modernizados, jogabilidade aprimorada e novos elementos de história.",
+    sinopse: "Reviva a icônica aventura de Leon Sus. Kennedy em uma vila europeia infestada de inimigos grotescos, com gráficos modernizados, jogabilidade aprimorada e novos elementos de história.",
     preco: 299.90
 }));
-console.log(jogos[jogos.length])
 
 criarArquivo(jogos);
 lerArquivo();
@@ -164,4 +171,4 @@ let jogosDesconto = arquivo.map((jogo) => {
     return {...jogo, preco: jogo.preco * 0.67}
 });
 mostrarJogos(jogosDesconto);
-console.log(jogos[jogos.length - 1])
+console.log(arquivo[arquivo.length - 1])
