@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="mycss.css" rel="stylesheet">
     <title>Cadastro</title>
+    <style>
+        body{
+            background-color: aquamarine;
+        }
+        h1{
+                color: purple;
+                font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+                text-align: center;
+            }
+    </style>
 </head>
 <body>
     <header>
@@ -12,16 +23,22 @@
     <main>
         <h1>Cadastro de clientes</h1>
         <form>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" required>
-            <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" required>
-            <label for="dt_nasc">Data de nascimento:</label>
-            <input type="text" id="dt_nasc" required>
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" required>
-            <label for="tel">Telefone:</label>
-            <input type="tel" id="celular" required>
+            <div class="container">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" placeholder="Ricardo Nascimento Pedroso" required class="input_text">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" placeholder="000.000.000-00" required class="input_text">
+                <label for="dt_nasc">Data de nascimento:</label>
+                <input type="date" id="dt_nasc" required class="input_text">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" placeholder="exemplo.legal@gmail.com" required class="input_text">
+                <label for="tel">Telefone:</label>
+                <input type="tel" id="celular" placeholder="(00) 00000-0000" required class="input_text">
+
+                <!-- CEP, Rua, Número, Bairro, Cidade, Estado(UF), Senha-->
+
+                <input type="submit" value="Enviar cadastro" class="btn_enviar">
+            </div>
         </form>
     </main>
     <footer>
