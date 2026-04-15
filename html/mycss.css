@@ -1,3 +1,19 @@
+body{
+    background-color: aquamarine;
+}
+h1{
+        color: purple;
+        font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+        text-align: center;
+}
+
+.main1_cont{
+    background-color: whitesmoke;
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+}
+
 form label{
     font-size: 20px;
     margin: 0 0 5px;
@@ -12,6 +28,7 @@ form label{
 
 .btn_enviar{
     width: 50%;
+    margin-bottom: 10px;
     padding: 15px 0;
     background-color: rgb(94, 94, 94);
     color: white;
@@ -28,7 +45,7 @@ form label{
     transform: scale(1.1);
 }
 
-.container{
+.form_cont{
     display: flex;
     flex-direction: column;
     align-items: center; 
