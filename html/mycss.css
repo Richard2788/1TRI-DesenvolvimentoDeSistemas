@@ -21,7 +21,7 @@ form label{
 
 .input_text{
     display: inline-flex;
-    width: 50%;
+    max-width: 350px;
     margin: 0 0 20px;
     padding: 10px 0;
 }
