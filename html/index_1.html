@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br"> 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="mycss.css" rel="stylesheet">
+    <title>Cadastro</title>
+    <!-- Adicionando Javascript -->
+    <script>
+    
+        function limpa_formulário_cep() {
+                //Limpa valores do formulário de cep.
+                document.getElementById('rua').value=("");
+                document.getElementById('bairro').value=("");
+                document.getElementById('cidade').value=("");
+                document.getElementById('uf').value=("");
+                document.getElementById('ibge').value=("");
+        }
+    
+        function meu_callback(conteudo) {
+            if (!("erro" in conteudo)) {
+                //Atualiza os campos com os valores.
+                document.getElementById('rua').value=(conteudo.logradouro);
+                document.getElementById('bairro').value=(conteudo.bairro);
+                document.getElementById('cidade').value=(conteudo.localidade);
+                document.getElementById('uf').value=(conteudo.uf);
+                document.getElementById('ibge').value=(conteudo.ibge);
+            } //end if.
+            else {
+                //CEP não Encontrado.
+                limpa_formulário_cep();
+                alert("CEP não encontrado.");
+            };
+        };
+            
+        function pesquisacep(cep){
+            const link = 'https://viacep.com.br/ws/' + cep + '/json/?callback=preencherEndereco';
+            var script = document.createElement('script')
+            script.src = link
+            document.body.appendChild(script)
+        };
+
+        function preencherEndereco(conteudo){
+            resposta.textContent = JSON.stringify(conteudo)
+        };
+        </script>
+</head>
+<body>
+    <header>
+
+    </header>
+    <main>
+        <div class="main1_cont">
+        <h1>Cadastro de clientes</h1>
+        <form method="get" action=".">
+            <div class="form_cont">
+                <label for="nome">Nome:</label>
+                <input name="nome" type="text" id="nome" placeholder="Ricardo Nascimento Pedroso" required class="input_text">
+                <p id="resposta"></p>
+                <label for="cpf">CPF:</label>
+                <input name="cpf" type="text" id="cpf" placeholder="000.000.000-00" required class="input_text">
+                <label for="dt_nasc">Data de nascimento:</label>
+                <input name="dt_nasc" type="date" id="dt_nasc" required class="input_text">
+                <label for="email">E-mail:</label>
+                <input name="email" type="email" id="email" placeholder="exemplo.legal@gmail.com" required class="input_text">
+                <label for="tel">Telefone:</label>
+                <input name="tel" type="tel" id="celular" placeholder="(00) 00000-0000" required class="input_text">
+                <label>Cep:</label>
+                <input name="cep" type="text" id="cep" placeholder="00000-000" value="" size="10" maxlength="9"
+                    onblur="pesquisacep(this.value)" required class="input_text"/><br />
+                <label for="rua">Rua:</label>
+                <input name="rua" type="text" id="rua" placeholder="São Francisco" size="60" required class="input_text"/><br />
+                <label for="bairro">Bairro:</label>
+                <input name="bairro" type="text" id="bairro" placeholder="Campo Belo" size="40" required class="input_text"/><br />
+                <label for="cidade">Cidade:</label>
+                <input name="cidade" type="text" id="cidade" placeholder="Belo Horizonte" size="40" required class="input_text"/><br />
+                <label for="uf">Estado:</label>
+                <input name="uf" type="text" id="uf" placeholder="SC" size="2" required class="input_text"/><br />
+                <label for="ibge">IBGE:</label>
+                <input name="ibge" type="text" id="ibge" placeholder="0000000"size="8" required class="input_text"/><br />
+                <label for="senha">Senha:</label>
+                <input name="senha" type="password" id="senha" placeholder="bombom123" required class="input_text">
+
+                <!-- CEP, Rua, Número, Bairro, Cidade, Estado(UF), Senha-->
+
+                <input type="submit" value="Enviar cadastro" class="btn_enviar">
+            </div>
+        </div>
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>
