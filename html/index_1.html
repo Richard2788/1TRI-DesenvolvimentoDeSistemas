@@ -11,7 +11,6 @@
     
         function limpa_formulário_cep(){
                 //Limpa valores do formulário de cep.
-                resposta.textContent = ('')
                 document.getElementById('rua').value=("");
                 document.getElementById('bairro').value=("");
                 document.getElementById('cidade').value=("");
@@ -20,13 +19,29 @@
         }
             
         function pesquisacep(cep){
-            const link = 'https://viacep.com.br/ws/' + cep + '/json/?callback=preencherEndereco';
-            var script = document.createElement('script');
-            script.src = link;
-            document.body.appendChild(script);
+            if (cep != ""){
+                var valida_cep = /^[0-9]{8}$/;
+                if (valida_cep.test(cep)){
+                    document.body.appendChild(script);
+                    document.getElementById('rua').value=("...");
+                    document.getElementById('bairro').value=("...");
+                    document.getElementById('cidade').value=("...");
+                    document.getElementById('uf').value=("...");
+                    document.getElementById('ibge').value=("...");
+                    const link = 'https://viacep.com.br/ws/' + cep + '/json/?callback=preencherEndereco';
+                    var script = document.createElement('script');
+                    script.src = link;
+                } else {
+                    limpa_formulário_cep();
+                    alert('Formato de CEP inválido.');
+                }
+            } else {
+                limpa_formulário_cep();
+            }
         };
 
         function preencherEndereco(conteudo){
+
             if (!('erro' in conteudo)){
                 document.getElementById('rua').value=(conteudo.logradouro);
                 document.getElementById('bairro').value=(conteudo.bairro);
