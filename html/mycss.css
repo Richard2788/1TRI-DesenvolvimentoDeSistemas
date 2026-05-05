@@ -9,6 +9,7 @@ h1{
 
 .main1_cont{
     background-color: whitesmoke;
+    border: 10px solid rgb(0, 202, 202);
     width: 50%;
     height: auto;
     margin: 0 auto;

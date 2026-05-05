@@ -18,19 +18,19 @@
                 document.getElementById('ibge').value=("");
         }
             
-        function pesquisacep(cep){
+        function pesquisacep(valor){
+            var cep = valor.replace(/\D/g, '');
             if (cep != ""){
                 var valida_cep = /^[0-9]{8}$/;
-                if (valida_cep.test(cep)){
-                    document.body.appendChild(script);
+                if (valida_cep.test(valor)){
                     document.getElementById('rua').value=("...");
                     document.getElementById('bairro').value=("...");
                     document.getElementById('cidade').value=("...");
                     document.getElementById('uf').value=("...");
                     document.getElementById('ibge').value=("...");
-                    const link = 'https://viacep.com.br/ws/' + cep + '/json/?callback=preencherEndereco';
                     var script = document.createElement('script');
-                    script.src = link;
+                    script.src = 'https://viacep.com.br/ws/' + cep + '/json/?callback=preencherEndereco';
+                    document.body.appendChild(script);
                 } else {
                     limpa_formulário_cep();
                     alert('Formato de CEP inválido.');
@@ -41,7 +41,6 @@
         };
 
         function preencherEndereco(conteudo){
-
             if (!('erro' in conteudo)){
                 document.getElementById('rua').value=(conteudo.logradouro);
                 document.getElementById('bairro').value=(conteudo.bairro);
