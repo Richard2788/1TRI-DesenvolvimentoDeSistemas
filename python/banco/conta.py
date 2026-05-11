@@ -10,15 +10,24 @@ class Conta:
         print(f"O saldo da {self.__titular} é {self.__saldo}")
 
     def deposito(self, valor):
-        if ():
-            self.__saldo = (self.__saldo - valor)
-            print('Saque realizado com sucesso!')
+        if (valor > 0):
+            self.__saldo = (self.__saldo + valor)
+            print('Depósito realizado com sucesso!')
         else:
             print('Valor acima do disponível.')
 
     def saque(self, valor):
-        if (valor <= self.__saldo):
+        if (valor <= self.__saldo and valor > 0):
             self.__saldo = (self.__saldo - valor)
             print('Saque realizado com sucesso!')
         else:
-            print('Valor acima do disponível.')
+            print('Erro ao efetuar saque.')
+
+    def transferencia(self, conta_destino, valor):
+        if (valor <= self.__saldo and valor > 0):
+            self.__saldo = (self.__saldo - valor)
+            conta_destino.deposito(valor)
+            print('Transferência realizada com sucesso!')
+        else:
+            print('Erro ao efetuar transferência.')
+
