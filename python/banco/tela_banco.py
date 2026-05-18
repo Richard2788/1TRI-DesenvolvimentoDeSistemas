@@ -11,3 +11,5 @@ conta2 = Conta('Rabele', 1235, '1037-2')
 conta2.extrato()
 conta1.transferencia(conta2, 200)
 conta2.extrato()
+conta2.titular = 'Rael'
+conta2.extrato()
