@@ -4,6 +4,7 @@
 const express = require('express')
 const fs = require('fs')
 const app = express()
+app.use(express.json())
 const port = 3001
 
 app.get('/ola', (req, res) => {
@@ -14,13 +15,19 @@ app.post('/clientes/cadastro', (req, res) => {
     // pegar os dados que vem do usuário
     // salvar no bd.json
     // resposta se tudo deu certo
-    const dados = req.body
-    const bd = fs.readFileSync('jogos.json', 'utf8')
-    const bdOBJ = JSON.parse(bd)
-    bdOBJ.push(dados)
-    fs.writeFileSync('jogos.json', JSON.stringify(bdOBJ), 'utf8')
-    console.log(bdOBJ)
-    res.json({resposta: 'ok'})
+    const cliente = req.body
+    if (!cliente || Object.keys(cliente).length === 0) {
+        res.status(400).json({resposta: "Body não preenchido"})
+    } else {
+        try {
+            const bd = JSON.parse(fs.readFileSync('jogos.json', 'utf8'))
+            bd.push(cliente)
+            fs.writeFileSync('jogos.json', JSON.stringify(bd), 'utf8')
+            res.status(200).json({resposta: "Cliente cadastrado com sucesso!"})
+        } catch(error) {
+            res.status(500).json({resposta: error.message})
+        }
+    }    
 })
 
 app.listen(port, () => {
