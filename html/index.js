@@ -20,9 +20,9 @@ app.post('/clientes/cadastro', (req, res) => {
         res.status(400).json({resposta: "Body não preenchido"})
     } else {
         try {
-            const bd = JSON.parse(fs.readFileSync('modeloCliente.json', 'utf8'))
+            const bd = JSON.parse(fs.readFileSync('bd.json', 'utf8'))
             bd.push(cliente)
-            fs.writeFileSync('modeloCliente.json', JSON.stringify(bd), 'utf8')
+            fs.writeFileSync('bd.json', JSON.stringify(bd), 'utf8')
             res.status(200).json({resposta: "Cliente cadastrado com sucesso!"})
         } catch(error) {
             res.status(500).json({resposta: error.message})
