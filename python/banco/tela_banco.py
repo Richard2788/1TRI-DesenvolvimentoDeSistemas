@@ -14,7 +14,8 @@ conta2.extrato()
 conta2.titular = 'Rael'
 conta2.extrato()
 print(f'''Olá, {conta2.titular}! :)
-Agência: {conta2.agencia} Conta: {conta2.numero}
+Agência: {conta2.agencia} 
+Conta: {conta2.numero}
 Saldo: {conta2.saldo}
 Senha: {conta2.senha}
 CPF: {conta2.cpf}
