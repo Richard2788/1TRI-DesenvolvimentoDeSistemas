@@ -1,1 +1,32 @@
-[]
+[
+    {
+        "nome": "Richard Marx Bellusci",
+        "cpf": "132.353.865-03",
+        "dt_nasc": "26/07/2009",
+        "email": "bellusci.richard@escola.pr.gov.br",
+        "celular": "(42) 99931-8655",
+        "cep": "83423-04",
+        "rua": "Expedição Taman",
+        "num": "121",
+        "bairro": "Boa Vista",
+        "cidade": "Ponta Grossa",
+        "uf": "PR",
+        "ibge": 1203233,
+        "senha": "xerox232"
+    },
+    {
+        "nome": "George Baluk Schein",
+        "cpf": "04512713239",
+        "dt_nasc": "30/07/1994",
+        "email": "george.baluk@hotmail.com",
+        "celular": "(42) 99913-9442",
+        "cep": "83432-12",
+        "rua": "Varnésio Freitas",
+        "num": "437",
+        "bairro": "Tamandaré",
+        "cidade": "Ponta Grossa",
+        "uf": "PR",
+        "ibge": 1203233,
+        "senha": "baluk3424897"
+    }
+]
