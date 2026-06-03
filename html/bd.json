@@ -28,5 +28,20 @@
         "uf": "PR",
         "ibge": 1203233,
         "senha": "baluk3424897"
+    },
+    {
+        "nome": "Natanael dos Anjos",
+        "cpf": "133.466.211-73",
+        "dt_nasc": "12/02/2001",
+        "email": "carriz.doo@gmail.com",
+        "celular": "(42) 99988-3178",
+        "cep": "35821-12",
+        "rua": "Comendador Miró",
+        "num": "437",
+        "bairro": "Campo Belo",
+        "cidade": "Ponta Grossa",
+        "uf": "PR",
+        "ibge": 1203233,
+        "senha": "bombries125442"
     }
 ]

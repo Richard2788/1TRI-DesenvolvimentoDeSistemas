@@ -68,7 +68,9 @@ app.delete('/clientes/:cpf', (req, res) => {
         };
         clientes.splice(usuario_encontrado, 1);
         res.status(200).json(clientes);
-        // atualizar o banco de dados (bd.json)
+
+        // atualiza o banco de dados (bd.json)
+        fs.writeFileSync('bd.json', JSON.stringify(clientes), 'utf8');
     } catch (error) {
         res.status(500).json({ resposta: error.message });
     };
