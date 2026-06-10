@@ -76,7 +76,7 @@ app.delete('/clientes/:cpf', (req, res) => {
     };
 });
 
-app.post('/clientes', (req, res) => {
+app.put('/clientes/:cpf', (req, res) => {
     const cpf_param = req.params['cpf'];
     const cliente = req.body;
     if (!cliente || Object.keys(cliente).length === 0) {
@@ -84,16 +84,17 @@ app.post('/clientes', (req, res) => {
     } else {
         try {
             const clientes = JSON.parse(fs.readFileSync('bd.json', 'utf8'));
-            const usuario_encontrado = clientes.findIndex((cliente) => {
+            const indice = clientes.findIndex((cliente) => {
                 return (cliente.cpf.replace(/\D/g, '')) === (cpf_param)
             });
-            console.log(usuario_encontrado)
-            if (usuario_encontrado === -1) {
+            console.log(indice)
+            if (indice === -1) {
                 return res.status(404).json({ erro: 'Cliente não existe no banco de dados' });
             };
-            const cliente = clientes[indice]
-            fs.writeFileSync('bd.json', JSON.stringify(cliente), 'utf8');
-            res.status(201).json({ resposta: "Cliente cadastrado com sucesso!" });
+            clientes[indice] = cliente
+            fs.writeFileSync('bd.json', JSON.stringify(clientes), 'utf8');
+            res.status(201).json({ resposta: "Cliente atualizado com sucesso!" });
+            console.log(clientes)
         } catch (error) {
             res.status(500).json({ resposta: error.message });
         };
