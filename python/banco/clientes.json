@@ -1,1 +1,29 @@
-[]
+[
+    {
+        "titular": "Rabele",
+        "agencia": "1355",
+        "numero": "3557-7",
+        "cpf": "02363543506",
+        "saldo": 0,
+        "senha": "ratoderua156",
+        "chavepix": []
+    },
+    {
+        "titular": "Richard",
+        "agencia": "1034",
+        "numero": "2081-3",
+        "cpf": "14821106957",
+        "saldo": 0,
+        "senha": "rmb1931",
+        "chavepix": []
+    },
+    {
+        "titular": "Lau",
+        "agencia": "1012",
+        "numero": "3251-7",
+        "cpf": "29901034473",
+        "saldo": 0,
+        "senha": "laulau322",
+        "chavepix": []
+    }
+]
