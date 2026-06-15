@@ -29,8 +29,17 @@ def cadastrar():
         fg= 'green'
     )
 
-def get_downloads(self):
-        (self.__downloads)
+def catalogo(titulo):
+    with open('livros.json', 'r') as livros_arq:
+        livros = json.load(livros_arq)
+    i = 0
+    while(not i === len(livros))
+        if (livros[i].titulo === titulo):
+            
+        label_res.configure(
+            text= (f'Há {len(livros)} livros'),
+            fg= 'green'
+        )
 
 # Toplevel cria a nova janela conectada à janela principal
 app = tk.Tk()
@@ -73,7 +82,7 @@ label_res.pack(pady= 5)
 # BOTÃO
 botao_enviar = tk.Button(app, text= 'Enviar', command= cadastrar)   # Cria um botão para enviar os dados da inseridos nas entradas de texto, text é texto do botão e command define reações ao usar o botão, neste caso chama a função 'login'
 botao_enviar.pack()    # Define as propriedades do botão
-botao_catalogo = tk.Button(app, text="Catálogo", command= get_downloads)
+botao_catalogo = tk.Button(app, text="Catálogo", command= catalogo)
 botao_catalogo.pack()
 botao_fechar = tk.Button(app, text="Fechar", command=app.destroy)
 botao_fechar.pack()

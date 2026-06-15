@@ -8,13 +8,16 @@ class Livro:
         self.__downloads = 0
 
     #Encapsulamento (getters)
-    @property
+
     def exibir(self):
         return print(f'''Título: {self.__titulo}
          Autor: {self.__autor}
          Ano: {self.__ano}
          Sinopse: {self.__sinopse}
          Downloads: {self.__downloads}''')
+
+    def get_downloads(self):
+        return (self.__downloads)
 
     @property
     def downloads(self):
