@@ -1,14 +1,5 @@
 [
   {
-    "id": 1,
-    "nome": "Apaga Apaga Apaga",
-    "autor": "Danilo e Davi",
-    "duracao": "2:37",
-    "estilo": "Sertanejo",
-    "mesLancamento": 2,
-    "anoLancamento": 2024
-  },
-  {
     "id": 2,
     "nome": "Gosta de Rua",
     "autor": "Felipe e Rodrigo",
@@ -178,5 +169,14 @@
     "estilo": "Sertanejo",
     "mesLancamento": 11,
     "anoLancamento": 2024
+  },
+  {
+    "id": 21,
+    "nome": "Rato Ratatouille",
+    "autor": "MC Ratão",
+    "duracao": "1:45",
+    "estilo": "Rap",
+    "mesLancamento": 3,
+    "anoLancamento": 2012
   }
 ]
