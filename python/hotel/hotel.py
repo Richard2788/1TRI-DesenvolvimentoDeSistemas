@@ -11,15 +11,22 @@ class Quarto:
         print(f'Quarto: {self.__numero}\nTipo: {self.__tipo}\nDiária: {self.__valor}\nReserva: {self.__reserva}')
     
     def reservar(self):
-        if (self.__reserva = 'Disponível'):
+        if (self.__reserva == 'Disponível'):
             self.__reserva = 'Indisponível'
             print('Quarto reservado com sucesso!')
         else:
             print('Sinto muito, este quarto está indisponível')
 
     def liberar(self):
-        if (self.__reserva = 'Indisponível'):
+        if (self.__reserva == 'Indisponível'):
             self.__reserva = 'Disponível'
             print('Quarto liberado com sucesso!')
         else:
             print('Este quarto já estava liberado')
+
+    def alt_preco(self, novo_preço):
+        if (not novo_preço > 0):
+            print('Valor inválido, digite um preço maior que R$0,00')
+        else:
+            self.__valor = novo_preço
+            print(f'Preço do quarto {self.__numero} alterado com sucesso!')
