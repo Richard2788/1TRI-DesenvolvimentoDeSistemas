@@ -56,12 +56,12 @@ app.delete('/musicas/:id', (req, res) => {
     console.log(id_param)
     try {
         const musicas = JSON.parse(fs.readFileSync('bd.json', 'utf-8'))
-        const id_encontrado = musicas.find((musica) => {
+        const id_encontrado = musicas.findIndex((musica) => {
             return (String(musica.id)) === (id_param)
         })
         console.log(id_encontrado)
-        if (!id_encontrado) {
-            res.status(404).json({ erro: 'Música não existe no banco de dados' })
+        if (id_encontrado === -1) {
+            return res.status(404).json({ erro: 'Música não existe no banco de dados' })
         }
         musicas.splice(id_encontrado, 1)
         res.status(200).json(musicas)
