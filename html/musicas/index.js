@@ -79,12 +79,12 @@ app.get('/musicas/estilo/:estilo', (req, res) => {
             return (musica.estilo) === (estilo_param)
         })
         console.log(estilo_escontrado)
-        if (!estilo_escontrado) {
-            res.status(404).json({erro:'Estilo não encontrado'})
+        if (estilo_escontrado.length === 0) {
+            return res.status(404).json({ erro: 'Estilo não encontrado' })
         }
         res.status(200).json(estilo_escontrado)
     } catch (error) {
-        res.status(500).json({resposta: error.message})
+        res.status(500).json({ resposta: error.message })
     }
 })
 
