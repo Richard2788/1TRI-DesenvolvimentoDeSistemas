@@ -5,8 +5,8 @@ const pool = mysql.createPool({
     host: '127.0.0.1',
     port: 3306,
     user: 'root',
-    password: 'escola',
-    database: 'maria'
+    password: 'escola',  // corrigir a senha
+    database: 'Richards_DB'  // colocar o nome do seu DB
 })
 
 module.exports = Object.freeze({
