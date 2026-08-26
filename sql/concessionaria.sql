@@ -7,4 +7,4 @@ CREATE TABLE Concessionária
  cep CHAR(8) NOT NULL,  
  num_lote INT NOT NULL,  
  UNIQUE (nome,email,cep,num_lote)
-); 
+);
