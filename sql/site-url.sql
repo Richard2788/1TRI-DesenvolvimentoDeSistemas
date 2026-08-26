@@ -12,8 +12,7 @@ CREATE TABLE Site_URL
  fragment VARCHAR(100) NOT NULL,  
  sld VARCHAR(15) NOT NULL,  
  cctld CHAR(2) NOT NULL,  
- porta VARCHAR(4) NOT NULL,  
- UNIQUE (idConcessionária,nome_ficticio,dominio,protocolo,tdl,sld,cctld)
+ porta VARCHAR(4) NOT NULL
 ); 
 
 ALTER TABLE Site_URL ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (idConcessionária)
