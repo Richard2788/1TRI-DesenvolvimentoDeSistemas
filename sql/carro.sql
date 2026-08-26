@@ -5,11 +5,10 @@ CREATE TABLE Carro
  idCompra INT,  
  marca VARCHAR(15) NOT NULL,  
  cor VARCHAR(15) NOT NULL,  
- placa CHAR(7) NOT NULL,  
+ placa CHAR(7) NOT NULL UNIQUE,  
  chassi VARCHAR(15),  
  motor FLOAT NOT NULL,  
- versao VARCHAR(15) NOT NULL,  
- UNIQUE (idSite_URL,idCompra,marca,cor,placa,motor,versao)
+ versao VARCHAR(15) NOT NULL
 ); 
 
 ALTER TABLE Carro ADD FOREIGN KEY(idSite_URL) REFERENCES Site_URL (idSite_URL)
