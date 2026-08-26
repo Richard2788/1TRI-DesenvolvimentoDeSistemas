@@ -1,0 +1,16 @@
+CREATE TABLE Carro 
+( 
+ id INT PRIMARY KEY AUTO_INCREMENT,  
+ idSite_URL INT,  
+ idCompra INT,  
+ marca VARCHAR(15) NOT NULL,  
+ cor VARCHAR(15) NOT NULL,  
+ placa CHAR(7) NOT NULL,  
+ chassi VARCHAR(15),  
+ motor FLOAT NOT NULL,  
+ versao VARCHAR(15) NOT NULL,  
+ UNIQUE (idSite_URL,idCompra,marca,cor,placa,motor,versao)
+); 
+
+ALTER TABLE Carro ADD FOREIGN KEY(idSite_URL) REFERENCES Site_URL (idSite_URL)
+ALTER TABLE Carro ADD FOREIGN KEY(idCompra) REFERENCES Compra (idCompra)
