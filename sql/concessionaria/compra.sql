@@ -8,6 +8,11 @@ CREATE TABLE Compra
  descricao VARCHAR(500)
 );
 
+INSERT INTO Compra (tipo_pagamento, descricao) VALUES
+('Cartão de Crédito', 'Compra de veículo novo'),
+('Boleto Bancário', 'Compra de veículo usado'),
+('Transferência Bancária', 'Compra de veículo seminovo');
+
 ALTER TABLE Compra ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
 ALTER TABLE Compra ADD FOREIGN KEY(idVendedor) REFERENCES Vendedor (idVendedor)
 ALTER TABLE Compra ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (idConcessionária)
