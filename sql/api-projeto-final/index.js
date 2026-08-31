@@ -28,7 +28,7 @@ app.post('/cliente', async (req, res) => {
             [cliente.nome, cliente.cpf, cliente.email, cliente.celular, cliente.senha]
 
         )
-        res.status(201).json({mensagem: 'Cliente cadastrado com sucesso! id = ' + resultado[0].insertId})
+        res.status(201).json({ mensagem: 'Cliente cadastrado com sucesso! id = ' + resultado[0].insertId })
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
@@ -39,7 +39,7 @@ app.get('/clientes', (req, res) => {
         const resultado = db.pool.query(
             `SELECT * FROM cliente;`,
         )
-        res.status(201).json({resultado})
+        res.status(201).json({ resultado })
     } catch (error) {
         res.status(500).json({ resposta: error.message });
     };
