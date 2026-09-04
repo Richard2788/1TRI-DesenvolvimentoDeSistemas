@@ -1,4 +1,4 @@
-CREATE TABLE Compra 
+CREATE TABLE compra 
 ( 
  id INT PRIMARY KEY AUTO_INCREMENT,  
  idCliente INT NOT NULL,  
@@ -8,11 +8,11 @@ CREATE TABLE Compra
  descricao VARCHAR(500)
 );
 
-INSERT INTO Compra (tipo_pagamento, descricao) VALUES
+INSERT INTO compra (tipo_pagamento, descricao) VALUES
 ('Cartão de Crédito', 'Compra de veículo novo'),
 ('Boleto Bancário', 'Compra de veículo usado'),
 ('Transferência Bancária', 'Compra de veículo seminovo');
 
-ALTER TABLE Compra ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
-ALTER TABLE Compra ADD FOREIGN KEY(idVendedor) REFERENCES Vendedor (idVendedor)
-ALTER TABLE Compra ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (idConcessionária)
+ALTER TABLE compra ADD FOREIGN KEY(idCliente) REFERENCES Cliente (idCliente)
+ALTER TABLE compra ADD FOREIGN KEY(idVendedor) REFERENCES Vendedor (idVendedor)
+ALTER TABLE compra ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (idConcessionária)

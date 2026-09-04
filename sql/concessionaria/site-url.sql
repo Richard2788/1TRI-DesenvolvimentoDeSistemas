@@ -1,4 +1,4 @@
-CREATE TABLE Site_URL 
+CREATE TABLE site_url 
 ( 
  id INT PRIMARY KEY AUTO_INCREMENT,  
  idConcessionária INT,  
@@ -15,10 +15,10 @@ CREATE TABLE Site_URL
  porta VARCHAR(4) NOT NULL
 ); 
 
-INSERT INTO Site_URL (
+INSERT INTO site_url (
     nome_ficticio, dominio, subdominio, protocolo, tdl, query, path, fragment, sld, cctld, porta
 ) VALUES (
     'Isabel', 'escola.pr.gov.br', 'www', 'https', '.br', 'id=123', '/home', '#section1', 'escola', 'br', '443'
 )
 
-ALTER TABLE Site_URL ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (id)
+ALTER TABLE site_url ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (id)

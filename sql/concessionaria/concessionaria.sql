@@ -1,4 +1,4 @@
-CREATE TABLE Concessionária 
+CREATE TABLE concessionária 
 ( 
  id INT PRIMARY KEY AUTO_INCREMENT,  
  nome VARCHAR(25) NOT NULL,  
@@ -9,7 +9,7 @@ CREATE TABLE Concessionária
  UNIQUE (nome,email,cep,num_lote)
 );
 
-INSERT INTO Concessionária (
+INSERT INTO concessionária (
     nome, cnpj, email, cep, num_lote
 ) VALUES (
     'Robert', '12.345.678/0001-90', 'robert.marx@escola.pr.gov.br', '88015-000', 123

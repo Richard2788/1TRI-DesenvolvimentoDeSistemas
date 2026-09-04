@@ -1,4 +1,4 @@
-CREATE TABLE Cliente 
+CREATE TABLE cliente 
 ( 
  id INT PRIMARY KEY AUTO_INCREMENT,  
  idConcessionária INT NOT NULL,  
@@ -9,11 +9,11 @@ CREATE TABLE Cliente
  senha VARCHAR(25) NOT NULL
 ); 
 
-INSERT INTO Cliente (
+INSERT INTO cliente (
     nome, celular, email, cpf, senha
 ) VALUES (
     'Richard', '(42)99931-8655', 'bellusci.richard@escola.pr.gov.br', '148.211.069-57',
         'sábadoanimadodograu123'
 )
 
-ALTER TABLE Cliente ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (idConcessionária)
+ALTER TABLE cliente ADD FOREIGN KEY(idConcessionária) REFERENCES Concessionária (idConcessionária)
