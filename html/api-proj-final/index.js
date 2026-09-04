@@ -113,10 +113,9 @@ app.post("/login", async (req, res) => {
     
     // envio para o BD
     const resultado = await db.pool.query(
-      `SELECT email, senha FROM Cliente WHERE email = ? AND senha = ?`,
+      `SELECT email, senha FROM Cliente WHERE email = ?`,
       [
         dadosLogin.email,
-        dadosLogin.senha,
       ],
     );
     const dados_bd = resultado[0][0];
