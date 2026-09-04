@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cliente`
+-- Table structure for table `Cliente`
 --
 
-DROP TABLE IF EXISTS `cliente`;
+DROP TABLE IF EXISTS `Cliente`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cliente` (
+CREATE TABLE `Cliente` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) NOT NULL,
   `cpf` char(14) NOT NULL,
@@ -36,13 +36,13 @@ CREATE TABLE `cliente` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cliente`
+-- Dumping data for table `Cliente`
 --
 
-LOCK TABLES `cliente` WRITE;
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` (`id`, `nome`, `cpf`, `email`, `celular`, `senha`) VALUES (1,'Richard Estarin','148.211.069-57','babao.lalibu@corne.com','(42)99931-8655','sábadoanimadodograu123'),(2,'Mariana Silva','452.189.302-12','mariana.silva@escola.pr.gov.br','(41)99876-5432','senhaForte123!'),(3,'Lucas Almeida','289.411.765-89','lucas.almeida@escola.pr.gov.br','(43)99123-4567','Lucas2026_x'),(4,'Beatriz Santos','712.304.598-44','beatriz.santos@escola.pr.gov.br','(42)98877-6655','Bia@Secure99'),(5,'Gabriel Costa','103.542.899-21','gabriel.costa@escola.pr.gov.br','(44)99765-1122','gabs_pass_01'),(6,'Amanda Oliveira','365.812.407-33','amanda.oliveira@escola.pr.gov.br','(45)99144-8899','Mandy#2026!'),(7,'Thiago Pereira','824.195.630-76','thiago.pereira@escola.pr.gov.br','(41)98433-2211','thiago_p_998'),(8,'Larissa Rodrigues','501.277.643-05','larissa.rodrigues@escola.pr.gov.br','(46)99911-5544','Lari@Pr2026'),(9,'Felipe Martins','639.408.115-92','felipe.martins@escola.pr.gov.br','(42)99822-3344','PipeMartins#1'),(10,'Camila Souza','198.533.720-68','camila.souza@escola.pr.gov.br','(43)99155-7788','CamiSouza_26'),(11,'Rodrigo Lima','942.610.357-11','rodrigo.lima@escola.pr.gov.br','(44)98844-3322','Rod_Lima_!@#'),(12,'Juliana Ribeiro','257.894.130-80','juliana.ribeiro@escola.pr.gov.br','(45)99711-6677','JuRibeiro$2026');
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+LOCK TABLES `Cliente` WRITE;
+/*!40000 ALTER TABLE `Cliente` DISABLE KEYS */;
+INSERT INTO `Cliente` (`id`, `nome`, `cpf`, `email`, `celular`, `senha`) VALUES (1,'Richard Estarin','148.211.069-57','babao.lalibu@corne.com','(42)99931-8655','sábadoanimadodograu123'),(2,'Mariana Silva','452.189.302-12','mariana.silva@escola.pr.gov.br','(41)99876-5432','senhaForte123!'),(3,'Lucas Almeida','289.411.765-89','lucas.almeida@escola.pr.gov.br','(43)99123-4567','Lucas2026_x'),(4,'Beatriz Santos','712.304.598-44','beatriz.santos@escola.pr.gov.br','(42)98877-6655','Bia@Secure99'),(5,'Gabriel Costa','103.542.899-21','gabriel.costa@escola.pr.gov.br','(44)99765-1122','gabs_pass_01'),(6,'Amanda Oliveira','365.812.407-33','amanda.oliveira@escola.pr.gov.br','(45)99144-8899','Mandy#2026!'),(7,'Thiago Pereira','824.195.630-76','thiago.pereira@escola.pr.gov.br','(41)98433-2211','thiago_p_998'),(8,'Larissa Rodrigues','501.277.643-05','larissa.rodrigues@escola.pr.gov.br','(46)99911-5544','Lari@Pr2026'),(9,'Felipe Martins','639.408.115-92','felipe.martins@escola.pr.gov.br','(42)99822-3344','PipeMartins#1'),(10,'Camila Souza','198.533.720-68','camila.souza@escola.pr.gov.br','(43)99155-7788','CamiSouza_26'),(11,'Rodrigo Lima','942.610.357-11','rodrigo.lima@escola.pr.gov.br','(44)98844-3322','Rod_Lima_!@#'),(12,'Juliana Ribeiro','257.894.130-80','juliana.ribeiro@escola.pr.gov.br','(45)99711-6677','JuRibeiro$2026');
+/*!40000 ALTER TABLE `Cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
