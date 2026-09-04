@@ -6,7 +6,7 @@ CREATE TABLE Carro
  marca VARCHAR(15) NOT NULL,  
  cor VARCHAR(15) NOT NULL,  
  placa CHAR(7) NOT NULL UNIQUE,  
- chassi VARCHAR(15),  
+ chassi VARCHAR(17),  
  motor FLOAT NOT NULL,  
  versao VARCHAR(15) NOT NULL
 );
