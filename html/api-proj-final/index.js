@@ -22,7 +22,7 @@ app.post("/cliente", async (req, res) => {
 
     // envio para o BD
     const resultado = await db.pool.query(
-      `INSERT INTO Cliente (
+      `INSERT INTO cliente (
                 idConcessionária, nome, cpf, email, celular, senha
             ) VALUES ( ?, ?, ?, ?, ?, ? )`,
       [
@@ -44,7 +44,7 @@ app.post("/cliente", async (req, res) => {
 
 app.get("/clientes", async (req, res) => {
   try {
-    const resultado = await db.pool.query(`SELECT * FROM Cliente;`);
+    const resultado = await db.pool.query(`SELECT * FROM cliente;`);
     res.status(201).json({ resultado });
   } catch (error) {
     res.status(500).json({ resposta: error.message });
@@ -55,7 +55,7 @@ app.get("/clientes/:cpf", async (req, res) => {
   const cpf_param = req.params["cpf"];
   try {
     const resultado = await db.pool.query(
-      `SELECT * FROM Cliente WHERE cpf = ?;`,
+      `SELECT * FROM cliente WHERE cpf = ?;`,
       [cpf_param],
     );
     if (!resultado[0] || resultado[0].length === 0) {
@@ -71,7 +71,7 @@ app.delete("/clientes/:cpf", async (req, res) => {
   const cpf_param = req.params["cpf"];
   try {
     const resultado = await db.pool.query(
-      `DELETE FROM Cliente WHERE cpf = ?;`,
+      `DELETE FROM cliente WHERE cpf = ?;`,
       [cpf_param],
     );
     if (!resultado[0] || resultado[0].length === 0) {
@@ -88,7 +88,7 @@ app.put("/clientes/:cpf", async (req, res) => {
   const cpf_param = req.params["cpf"];
   try {
     const resultado = await db.pool.query(
-      `UPDATE Cliente SET nome = ?, cpf = ?, email = ?, celular = ?, senha = ? WHERE cpf = ?`,
+      `UPDATE cliente SET nome = ?, cpf = ?, email = ?, celular = ?, senha = ? WHERE cpf = ?`,
       [
         cliente.nome,
         cliente.cpf,
@@ -113,7 +113,7 @@ app.post("/login", async (req, res) => {
     
     // envio para o BD
     const resultado = await db.pool.query(
-      `SELECT email, senha FROM Cliente WHERE email = ?`,
+      `SELECT email, senha FROM cliente WHERE email = ?`,
       [
         dadosLogin.email,
       ],
