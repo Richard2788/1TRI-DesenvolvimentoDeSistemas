@@ -13,19 +13,6 @@
     <link href="mycss.css" rel="stylesheet">
     <title>Cadastro</title>
     <!-- Adicionando Javascript -->
-    <script>
-        function pegarDados(){
-            dados = {
-                nome: document.getElementById("nome").value,
-                cpf: document.getElementById("cpf").value,
-                nome: document.getElementById("nome").value,
-                dt_nasc: document.getElementById("dt_nasc").value,
-                email: document.getElementById("email").value,
-                celular: document.getElementById("celular").value,
-                senhakz: document.getElementById("senha").value,
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -80,7 +67,7 @@
         </nav>
         <div class="main1_cont">
             <h1>Cadastro de clientes</h1>
-            <form method="get" action=".">
+            <form id="form_cliente" method="get" action=".">
                 <div class="form_cont">
                     <label for="nome">Nome:</label>
                     <input name="nome" type="text" id="nome" placeholder="Ricardo Nascimento Pedroso" required
@@ -94,35 +81,66 @@
                         class="input_text">
                     <label for="tel">Telefone:</label>
                     <input name="tel" type="tel" id="celular" placeholder="(00) 00000-0000" required class="input_text">
-                    <label>Cep:</label>
-                    <input name="cep" type="text" id="cep" placeholder="00000-000" value="" size="10" maxlength="9"
-                        onblur="pesquisacep(this.value);" required class="input_text" /><br />
-                    <label for="rua">Rua:</label>
-                    <input name="rua" type="text" id="rua" placeholder="São Francisco" size="60" required
-                        class="input_text" /><br />
-                    <label for="bairro">Bairro:</label>
-                    <input name="bairro" type="text" id="bairro" placeholder="Campo Belo" size="40" required
-                        class="input_text" /><br />
-                    <label for="cidade">Cidade:</label>
-                    <input name="cidade" type="text" id="cidade" placeholder="Belo Horizonte" size="40" required
-                        class="input_text" /><br />
-                    <label for="uf">Estado:</label>
-                    <input name="uf" type="text" id="uf" placeholder="SC" size="2" required class="input_text" /><br />
-                    <label for="ibge">IBGE:</label>
-                    <input name="ibge" type="text" id="ibge" placeholder="0000000" size="8" required
-                        class="input_text" /><br />
                     <label for="senha">Senha:</label>
                     <input name="senha" type="password" id="senha" placeholder="bombom123" required class="input_text">
 
                     <p>Já possui login? <a href="index.html">Faça login</a></p>
-                    <input type="submit" value="Enviar cadastro" class="btn_enviar">
+                    <input type="submit" value="Enviar cadastro" class="btn_enviar" onclick="enviarCadastro()">
                 </div>
         </div>
         </form>
     </main>
     <footer>
-
+        <p>&copy; 2026 Loja de Carros. Todos os direitos reservados.</p>
     </footer>
+    <script>
+        function pegarDados() {
+            dados = {
+                nome: document.getElementById("nome").value,
+                cpf: document.getElementById("cpf").value,
+                nome: document.getElementById("nome").value,
+                dt_nasc: document.getElementById("dt_nasc").value,
+                email: document.getElementById("email").value,
+                celular: document.getElementById("celular").value,
+                senhakz: document.getElementById("senha").value,
+            }
+            return dados;
+        }
+
+        function enviarCadastro() {
+            const form_cliente = document.getElementById("form_cliente");
+            formCadastro.addEventListener("submit", async (event) => {
+                event.preventDefault(); // Impede o envio do formulário
+                btn_enviar.disabled = true; // Desabilita o botão de envio
+                btn_enviar.value = "Enviando cadastro..."; // Altera o texto do botão de envio
+                
+                dados = pegarDados();
+                alert(JSON.stringify(dados));
+                
+                try {
+                    const resposta = await fetch ("http://localhost:10.216.243.142/cliente", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(dados)
+                    })
+                    if (!resposta.ok) {
+                        throw new Error("Erro na API: " + resposta.status);
+                    }
+                    alert("Cadastro foi realizado com sucesso!");
+                    form_cliente.reset();
+                } catch (error) {
+                    alert(error);
+                } finally {
+                    btn_value = "Enviar cadastro"; // Restaura o texto do botão de envio
+                    btn_enviar.disabled = false; // Habilita o botão de envio
+                }
+            })
+            
+            const btn_enviar = document.getElementById("btn_enviar");
+        }
+    </script>
 </body>
 
 </html>

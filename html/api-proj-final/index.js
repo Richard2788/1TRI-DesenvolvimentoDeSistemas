@@ -7,8 +7,11 @@ app.use(express.json());
 
 // npm i mysql2
 // npm i bcrypt
+// npm cors
 const db = require("./db");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
+app.use(cors());
 
 app.get("/ola", (req, res) => {
   res.send("Hello World!");
