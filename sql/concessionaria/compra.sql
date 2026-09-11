@@ -8,23 +8,32 @@ CREATE TABLE compra (
 );
 
 INSERT INTO
-    compra (tipo_pagamento, descricao)
+    compra (idCliente, idVendedor, idConcessionária, tipo_pagamento, descricao)
 VALUES (
+        1,
+        1,
+        1,
         'Cartão de Crédito',
         'Compra de veículo novo'
     ),
     (
+        1,
+        1,
+        1,
         'Boleto Bancário',
         'Compra de veículo usado'
     ),
     (
+        1,
+        1,
+        1,
         'Transferência Bancária',
         'Compra de veículo seminovo'
     );
 
 ALTER TABLE compra
-ADD FOREIGN KEY (idCliente) REFERENCES Cliente (idCliente);
+ADD FOREIGN KEY (idCliente) REFERENCES cliente (idCliente);
 ALTER TABLE compra
-ADD FOREIGN KEY (idVendedor) REFERENCES Vendedor (idVendedor);
+ADD FOREIGN KEY (idVendedor) REFERENCES vendedor (idVendedor);
 ALTER TABLE compra
-ADD FOREIGN KEY (idConcessionária) REFERENCES Concessionária (idConcessionária);
+ADD FOREIGN KEY (idConcessionária) REFERENCES concessionária (idConcessionária);

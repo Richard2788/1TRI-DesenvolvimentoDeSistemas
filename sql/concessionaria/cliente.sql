@@ -25,4 +25,4 @@ VALUES (
     )
 
 ALTER TABLE cliente
-ADD FOREIGN KEY (idConcessionária) REFERENCES Concessionária (idConcessionária);
+ADD FOREIGN KEY (idConcessionária) REFERENCES concessionária (idConcessionária);

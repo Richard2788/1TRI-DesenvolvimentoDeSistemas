@@ -43,4 +43,4 @@ VALUES (
     )
 
 ALTER TABLE site_url
-ADD FOREIGN KEY (idConcessionária) REFERENCES Concessionária (id);
+ADD FOREIGN KEY (idConcessionária) REFERENCES concessionária (id);

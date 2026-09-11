@@ -45,6 +45,6 @@ VALUES (
     );
 
 ALTER TABLE carro
-ADD FOREIGN KEY (idSite_URL) REFERENCES Site_URL (idSite_URL);
+ADD FOREIGN KEY (idSite_URL) REFERENCES site_url (idSite_URL);
 ALTER TABLE carro
-ADD FOREIGN KEY (idCompra) REFERENCES Compra (idCompra);
+ADD FOREIGN KEY (idCompra) REFERENCES compra (idCompra);
