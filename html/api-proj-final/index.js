@@ -6,12 +6,21 @@ const port = 3000;
 app.use(express.json());
 
 // npm i mysql2
-// npm i bcrypt
-// npm cors
 const db = require("./db");
+
+// npm i bcrypt
 const bcrypt = require("bcrypt");
+
+// npm cors
 const cors = require("cors");
 app.use(cors());
+
+// npm i jsonwebtoken
+const jwt = require("jsonwebtoken");
+
+// npm i dotenv
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.get("/ola", (req, res) => {
   res.send("Hello World!");
