@@ -113,7 +113,7 @@ app.put("/clientes/:cpf", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const dadosLogin = req.body;
-    
+
     // envio para o BD
     const resultado = await db.pool.query(
       `SELECT email, senha FROM cliente WHERE email = ?`,
@@ -125,8 +125,8 @@ app.post("/login", async (req, res) => {
     if (!dados_bd) {
       return res.status(401).json({ mensagem: "Email ou senha incorretos" });
     }
-    const senhaCript = bcrypt.hashSync(dadosLogin.senha, 10);
-    if(!dadosLogin.senha === senhaCript) {
+    const senha_valida = await bcrypt.compare(dadosLogin.senha, dados_bd.senha);
+    if (!senha_valida) {
       return res.status(401).json({ mensagem: "Email ou senha incorretos" });
     }
     res.status(201).json({
