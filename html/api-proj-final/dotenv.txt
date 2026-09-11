@@ -1,0 +1,3 @@
+Criar arquivo ".env:"
+
+JWS_SECRET=senha_muit0_forte_121323dfdt23retrgr

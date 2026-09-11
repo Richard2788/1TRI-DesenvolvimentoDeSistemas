@@ -2,7 +2,7 @@ CREATE TABLE cliente (
     id INT PRIMARY KEY AUTO_INCREMENT,
     idConcessionária INT NOT NULL,
     nome VARCHAR(50) NOT NULL,
-    celular CHAR(14) NOT NULL,
+    celular CHAR(15) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     cpf CHAR(14) NOT NULL UNIQUE,
     senha VARCHAR(25) NOT NULL
@@ -10,6 +10,7 @@ CREATE TABLE cliente (
 
 INSERT INTO
     cliente (
+        idConcessionária,
         nome,
         celular,
         email,
@@ -17,8 +18,9 @@ INSERT INTO
         senha
     )
 VALUES (
+        1,
         'Richard',
-        '(42)99931-8655',
+        '(42) 99931-8655',
         'bellusci.richard@escola.pr.gov.br',
         '148.211.069-57',
         'sábadoanimadodograu123'

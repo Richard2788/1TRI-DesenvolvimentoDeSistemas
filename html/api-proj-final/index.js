@@ -38,7 +38,7 @@ app.post("/cliente", async (req, res) => {
                 idConcessionária, nome, cpf, email, celular, senha
             ) VALUES ( ?, ?, ?, ?, ?, ? )`,
       [
-        cliente.idConcessionária,
+        1,
         cliente.nome,
         cliente.cpf,
         cliente.email,
@@ -131,10 +131,13 @@ app.post("/login", async (req, res) => {
       ],
     );
     const dados_bd = resultado[0][0];
+    console.log(dados_bd);
+    console.log(dadosLogin);
     if (!dados_bd) {
       return res.status(401).json({ mensagem: "Email ou senha incorretos" });
     }
     const senha_valida = await bcrypt.compare(dadosLogin.senha, dados_bd.senha);
+    console.log(senha_valida);
     if (!senha_valida) {
       return res.status(401).json({ mensagem: "Email ou senha incorretos" });
     }
