@@ -5,7 +5,7 @@ CREATE TABLE cliente (
     celular CHAR(15) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     cpf CHAR(14) NOT NULL UNIQUE,
-    senha VARCHAR(25) NOT NULL
+    senha VARCHAR(256) NOT NULL
 );
 
 INSERT INTO

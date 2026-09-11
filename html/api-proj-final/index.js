@@ -31,6 +31,7 @@ app.post("/cliente", async (req, res) => {
     const cliente = req.body;
     const senhaCript = bcrypt.hashSync(cliente.senha, 10);
     cliente.senha = senhaCript;
+    console.log(senhaCript)
 
     // envio para o BD
     const resultado = await db.pool.query(
@@ -133,9 +134,9 @@ app.post("/login", async (req, res) => {
     const dados_bd = resultado[0][0];
     console.log(dados_bd);
     console.log(dadosLogin);
-    if (!dados_bd) {
+    /*if (!dados_bd) {
       return res.status(401).json({ mensagem: "Email ou senha incorretos" });
-    }
+    }*/
     const senha_valida = await bcrypt.compare(dadosLogin.senha, dados_bd.senha);
     console.log(senha_valida);
     if (!senha_valida) {
