@@ -99,6 +99,22 @@ app.get("/clientes/:cpf", async (req, res) => {
   }
 });
 
+app.get("/clientes/:id", async (req, res) => {
+  const id_param = req.params["id"];
+  try {
+    const resultado = await db.pool.query(
+      `SELECT * FROM cliente WHERE id = ?;`,
+      [id_param],
+    );
+    if (!resultado[0] || resultado[0].length === 0) {
+      res.status(404).json({ erro: "Cliente não existe no banco de dados" });
+    }
+    res.status(200).json(resultado[0]);
+  } catch (error) {
+    res.status(500).json({ resposta: error.message });
+  }
+});
+
 app.delete("/clientes/:cpf", async (req, res) => {
   const cpf_param = req.params["cpf"];
   try {
