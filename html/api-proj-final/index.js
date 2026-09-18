@@ -32,9 +32,9 @@ app.post("/cliente", async (req, res) => {
     // envio para o BD
     const resultado = await db.pool.query(
       `INSERT INTO cliente (
-                nome, cpf, celular, email, senha
-            ) VALUES ( ?, ?, ?, ?, ? )`,
-      [cliente.nome, cliente.cpf, cliente.celular,
+                idConcessionária, nome, cpf, celular, email, senha
+            ) VALUES (?, ?, ?, ?, ?, ? )`,
+      [1, cliente.nome, cliente.cpf, cliente.celular,
       cliente.email, cliente.senha]
     )
     res.status(201).json({
@@ -115,6 +115,22 @@ app.get("/clientes/:id", async (req, res) => {
   }
 });
 
+app.get("/clientes/perfil", autenticar, async (req, res) => {
+  const id = req.usuario.id;
+  try {
+    const resultado = await db.pool.query(
+      `SELECT * FROM cliente WHERE id = ?;`,
+      [id],
+    );
+    const perfil = resultado[0][0];
+    delete perfil.senha; // Remover a senha do perfil antes de enviar a resposta
+    res.status(200).json(perfil);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro interno do servidor" });
+  }
+});
+
+
 app.delete("/clientes/:cpf", async (req, res) => {
   const cpf_param = req.params["cpf"];
   try {
@@ -154,6 +170,24 @@ app.put("/clientes/:cpf", async (req, res) => {
     res.status(500).json({ resposta: error.message });
   }
 });
+
+function autenticar(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(401).json({ erro: "Token não fornecido" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.usuario = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ erro: "Token inválido" });
+  }
+}
 
 app.listen(port, () => {
   console.log("API executando na porta", port);
