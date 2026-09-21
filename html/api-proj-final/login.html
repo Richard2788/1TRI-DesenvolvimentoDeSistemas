@@ -69,7 +69,7 @@
         </nav>
         <div class="main1_cont">
             <h1>Login</h1>
-            <form id="form_cliente">
+            <form id="form_login">
                 <div class="form_cont">
                     <label for="email">E-mail:</label>
                     <input name="email" type="email" id="email" placeholder="exemplo.legal@gmail.com" required
@@ -94,9 +94,9 @@
             }
             return dados;
         }
-        const form_cliente = document.getElementById("form_cliente");
+        const form_login = document.getElementById("form_login");
         const btn_enviar = document.getElementById("btn_enviar");
-        form_cliente.addEventListener("submit", async (event) => {
+        form_login.addEventListener("submit", async (event) => {
             event.preventDefault(); // Impede o envio do formulário
             btn_enviar.disabled = true; // Desabilita o botão de envio
             btn_enviar.value = "Enviando dados..."; // Altera o texto do botão de envio
@@ -112,11 +112,15 @@
                     },
                     body: JSON.stringify(dados)
                 })
+                const json_resposta = await resposta.json()
                 if (!resposta.ok) {
-                    throw new Error("Erro na API: " + resposta.status);
+                    if (resposta.status == 401) {
+                        throw new Error(json_resposta.msg)
+                    }
+                    throw new Error("Erro inesperado na API: " + resposta.status);
                 }
                 alert("Login foi realizado com sucesso!");
-                form_cliente.reset();
+                form_login.reset();
             } catch (error) {
                 alert(error);
             } finally {
