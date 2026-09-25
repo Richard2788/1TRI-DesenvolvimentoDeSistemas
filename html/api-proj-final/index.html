@@ -12,7 +12,7 @@
         crossorigin="anonymous"></script>
     <script src="./pages.js"></script>
     <link href="mycss.css" rel="stylesheet">
-    <title>Cadastro</title>
+    <title>Home</title>
 </head>
 
 <body>
@@ -46,7 +46,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Perfil</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="logout()">Sair</a></li>
+                                <li><a class="dropdown-item" href="#">Sair</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -66,76 +66,12 @@
             </div>
         </nav>
         <div class="main1_cont">
-            <h1>Cadastro de clientes</h1>
-            <form id="form_cadastro">
-                <div class="form_cont">
-                    <label for="nome">Nome:</label>
-                    <input name="nome" type="text" id="nome" placeholder="Ricardo Nascimento Pedroso" required
-                        class="input_text">
-                    <label for="cpf">CPF:</label>
-                    <input name="cpf" type="text" id="cpf" placeholder="000.000.000-00" required class="input_text">
-                    <label for="dt_nasc">Data de nascimento:</label>
-                    <input name="dt_nasc" type="date" id="dt_nasc" required class="input_text">
-                    <label for="email">E-mail:</label>
-                    <input name="email" type="email" id="email" placeholder="exemplo.legal@gmail.com" required
-                        class="input_text">
-                    <label for="tel">Telefone:</label>
-                    <input name="tel" type="tel" id="celular" placeholder="(00) 00000-0000" required class="input_text">
-                    <label for="senha">Senha:</label>
-                    <input name="senha" type="password" id="senha" placeholder="bombom123" required class="input_text">
-
-                    <p>Já possui login? <a href="login.html">Faça login</a></p>
-                    <input type="submit" value="Enviar cadastro" class="btn_enviar" id="btn_enviar">
-                </div>
+            <h1>Olá, visitante!</h1>
         </div>
-        </form>
     </main>
     <footer>
         <p>&copy; 2026 Loja de Carros. Todos os direitos reservados.</p>
     </footer>
-    <script>
-        function pegarDados() {
-            dados = {
-                nome: document.getElementById("nome").value,
-                cpf: document.getElementById("cpf").value,
-                dt_nasc: document.getElementById("dt_nasc").value,
-                email: document.getElementById("email").value,
-                celular: document.getElementById("celular").value,
-                senha: document.getElementById("senha").value,
-            }
-            return dados;
-        }
-        const form_cadastro = document.getElementById("form_cadastro");
-        const btn_enviar = document.getElementById("btn_enviar");
-        form_cadastro.addEventListener("submit", async (event) => {
-            event.preventDefault(); // Impede o envio do formulário
-            btn_enviar.disabled = true; // Desabilita o botão de envio
-            btn_enviar.value = "Enviando cadastro..."; // Altera o texto do botão de envio
-
-            dados = pegarDados();
-            //alert(JSON.stringify(dados));
-
-            try {
-                const resposta = await fetch("http://localhost:3000/cliente", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(dados)
-                })
-                if (!resposta.ok) {
-                    throw new Error("Erro na API: " + resposta.status);
-                }
-                alert("Cadastro foi realizado com sucesso!");
-                form_cadastro.reset();
-            } catch (error) {
-                alert(error);
-            } finally {
-                btn_enviar.value = "Enviar cadastro"; // Restaura o texto do botão de envio
-                btn_enviar.disabled = false; // Habilita o botão de envio
-            }
-        })
-    </script>
 </body>
 
 </html>
