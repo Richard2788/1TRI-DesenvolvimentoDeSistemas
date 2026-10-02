@@ -1,0 +1,104 @@
+Para fazer a notificação do Toastify aparecer e dar tempo do usuário visualizá-la antes que a página mude ou atualize, nós precisamos impedir o comportamento padrão de recarregamento imediato usando event.preventDefault() e adicionar um atraso controlado (setTimeout) para o redirecionamento.
+Como você já removeu o pacote do backend (evitando o Erro 500), aqui está a implementação exata para o seu arquivo de scripts das páginas (frontend) e os cabeçalhos HTML:
+------------------------------
+## 1. Vincule o CSS e JS do Toastify no seu HTML
+Antes de chamar as funções, o navegador precisa carregar o Toastify. Certifique-se de que o <head> dos seus arquivos HTML (como login.html e cadastro.html) contenha as seguintes tags importadas via CDN:
+
+<!-- Cole dentro da tag <head> do seu HTML -->
+<link rel="stylesheet" type="text/css" href="https://jsdelivr.net">
+<script type="text/javascript" src="https://jsdelivr.net"></script>
+
+------------------------------
+## 2. Funções de Notificação com Atraso (JavaScript Frontend)
+Substitua ou adicione as funções abaixo no arquivo de scripts das suas páginas do navegador. Repare no uso do setTimeout para que o redirecionamento aconteça apenas após o tempo de exibição do toast:
+
+// Função padrão para exibir mensagens com redirecionamento opcionalfunction exibirAlerta(mensagem, tipo = "sucesso", urlRedirecionamento = null) {
+    const corFundo = tipo === "sucesso" ? "#28a745" : "#dc3545"; // Verde ou Vermelho
+    const tempoExibicao = 2500; // Tempo em milissegundos (2.5 segundos)
+
+    Toastify({
+        text: mensagem,
+        duration: tempoExibicao,
+        gravity: "top",
+        position: "right",
+        close: true,
+        style: {
+            background: corFundo,
+        }
+    }).showToast();
+
+    // Se uma URL foi passada, espera o toast aparecer antes de mudar de página
+    if (urlRedirecionamento) {
+        setTimeout(() => {
+            window.location.href = urlRedirecionamento;
+        }, tempoExibicao - 500); // Muda de página um pouco antes de fechar totalmente
+    }
+}
+// Atualização da sua função de Logout para mostrar o toast antes de sairfunction logout(event) {
+    if (event) event.preventDefault(); // Impede a atualização ou navegação imediata
+
+    localStorage.removeItem("nome_cliente");
+    localStorage.removeItem("token");
+
+    // Mostra a notificação e redireciona após 2.5 segundos
+    exibirAlerta("Logout realizado com sucesso! Até logo.", "sucesso", "login.html");
+}
+function atualizar_navbar() {
+    const nome = localStorage.getItem('nome_cliente');
+    const token = localStorage.getItem('token');
+
+    const nav_unknown = document.getElementsByClassName("nav-item unknown");
+    const btn_user_info = document.getElementsByClassName("nav-item dropdown");
+    const btn_user_name = document.getElementsByClassName("nav-link dropdown-toggle");
+
+    if (token && nome) {
+        if(nav_unknown[0]) nav_unknown[0].style.display = "none";
+        if(btn_user_info[0]) btn_user_info[0].style.display = "inline";
+        if(btn_user_name[0]) btn_user_name[0].innerText = "Olá, " + nome.split(" ")[0];
+    } else {
+        if(nav_unknown[0]) nav_unknown[0].style.display = "inline";
+        if(btn_user_info[0]) btn_user_info[0].style.display = "none";
+    }
+}
+
+window.addEventListener("DOMContentLoaded", atualizar_navbar);
+
+------------------------------
+## 3. Exemplo Prático: Como usar no formulário de Cadastro e Login
+Quando o usuário clicar no botão "Enviar cadastro", você deve capturar o evento do formulário, impedir o recarregamento da página e disparar a lógica:
+
+// Exemplo aplicado a uma função de envio de formulário de Login/Cadastroasync function enviarFormularioCadastro(event) {
+    event.preventDefault(); // 1. CRUCIAL: Impede a página de atualizar imediatamente
+
+    const dados = {
+        nome: document.getElementById("nome").value,
+        cpf: document.getElementById("cpf").value,
+        email: document.getElementById("email").value,
+        celular: document.getElementById("celular").value,
+        senha: document.getElementById("senha").value
+    };
+
+    try {
+        const resposta = await fetch("http://localhost:3000/cliente", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.status === 201) {
+            // Exibe notificação de sucesso e só DEPOIS vai para o login
+            exibirAlerta("Cadastro realizado com sucesso!", "sucesso", "login.html");
+        } else {
+            // Exibe erro sem mudar de página
+            exibirAlerta(resultado.erro || "Erro ao cadastrar.", "erro");
+        }
+    } catch (error) {
+        exibirAlerta("Não foi possível conectar ao servidor.", "erro");
+    }
+}
+// Vincula a função ao evento submit do seu formulário HTML// document.getElementById("meuFormulario").addEventListener("submit", enviarFormularioCadastro);
+
+Deseja ajuda para vincular essas funções de envio diretamente aos campos dos seus formulários HTML de login e cadastro? Se sim, poderia compartilhar o código estrutural das suas tags <form>?
+
