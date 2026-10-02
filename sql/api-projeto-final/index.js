@@ -17,7 +17,7 @@ app.get('/ola', (req, res) => {
 app.post('/cliente', async (req, res) => {
     try {
         const cliente = req.body
-        const senhaCript = bcrypt.hashSync(cliente.senha, 10)
+        const senhaCript = bcrypt.hash(cliente.senha, 10)
         cliente.senha = senhaCript
 
         // envio para o BD

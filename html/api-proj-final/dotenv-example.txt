@@ -1,0 +1,12 @@
+Criar arquivo ".env:"
+
+JWT_SECRET=senha_muit0_forte_121323dfdt23retrgr
+
+} catch (error) {
+            Toastify({
+                text: "Erro ao inserir clientes!",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                backgroundColor: "#f44336"
+            }).showToast();

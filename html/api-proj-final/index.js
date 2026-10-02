@@ -26,7 +26,7 @@ app.use(cors())
 app.post("/cliente", async (req, res) => {
   try {
     const cliente = req.body
-    const senhaCript = bcrypt.hashSync(cliente.senha, 10)
+    const senhaCript = await bcrypt.hash(cliente.senha, 10)
     cliente.senha = senhaCript
 
     // envio para o BD
@@ -35,11 +35,9 @@ app.post("/cliente", async (req, res) => {
                 idConcessionária, nome, cpf, celular, email, senha
             ) VALUES (?, ?, ?, ?, ?, ? )`,
       [1, cliente.nome, cliente.cpf, cliente.celular,
-      cliente.email, cliente.senha]
+        cliente.email, cliente.senha]
     )
-    res.status(201).json({
-      msg: "Cliente cadastrado, ID = " + resultado[0].insertId
-    })
+    res.status(201).json({ msg: "Cliente cadastrado com sucesso!" })
   } catch (error) {
     res.status(500).json({ erro: error.message })
   }
@@ -142,7 +140,7 @@ app.put("/clientes/:cpf", async (req, res) => {
 
 function autenticar(req, res, next) {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; 
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (token == null) {
     return res.status(401).json({ erro: "Token não fornecido, usar Authorization Bearer <token>" });

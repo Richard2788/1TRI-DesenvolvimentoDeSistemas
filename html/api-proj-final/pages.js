@@ -4,11 +4,12 @@ function atualizar_navbar() {
 
     const nav_unknown = document.getElementsByClassName("nav-item unknown")
     const btn_user_info = document.getElementsByClassName("nav-item dropdown")
+    const btn_user_name = document.getElementsByClassName("nav-link dropdown-toggle")
 
     if (token && nome) {
         nav_unknown[0].style.display = "none"
         btn_user_info[0].style.display = "inline"
-        //btn_user_info[0].innerText = "Olá, " + nome.split(" ")[0]
+        btn_user_name[0].innerText = "Olá, " + nome.split(" ")[0]
     } else {
         nav_unknown[0].style.display = "inline"
         btn_user_info[0].style.display = "none"
@@ -19,7 +20,7 @@ function atualizar_navbar() {
 function logout() {
     localStorage.removeItem("nome_cliente")
     localStorage.removeItem("token")
-    window.location.href("login.html")
+    window.location.href = "login.html"
 }
 
 window.addEventListener("DOMContentLoaded", atualizar_navbar)

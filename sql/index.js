@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt')
 app.post('/cliente', async (req, res) => {
     try {
         const cliente = req.body
-        const senhaCript = bcrypt.hashSync(cliente.senha, 10)
+        const senhaCript = await bcrypt.hash(cliente.senha, 10)
         cliente.senha = senhaCript
 
         // envio para o BD
