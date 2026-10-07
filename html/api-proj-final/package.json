@@ -5,9 +5,9 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "./site/index.js",
   "scripts": {
-    "start": "node migration.js && node index.js"
+    "start": "node ./site/migration.js && node ./site/index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

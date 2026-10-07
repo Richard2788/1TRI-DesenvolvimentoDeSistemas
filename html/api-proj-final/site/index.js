@@ -1,0 +1,161 @@
+// npm init
+// npm i dotenv
+const path = require('path');
+require('dotenv').config({
+    path: path.join(__dirname, '.env')
+});
+// npm i express
+const express = require("express")
+const app = express()
+const port = process.env.API_PORT
+app.use(express.json())
+
+// npm i mysql2
+const db = require("./db")
+
+// npm i bcrypt
+const bcrypt = require("bcrypt")
+
+// npm i jsonwebtoken
+const jwt = require("jsonwebtoken")
+
+// npm i cors
+const cors = require("cors")
+app.use(cors())
+
+
+app.post("/cliente", async (req, res) => {
+  try {
+    const cliente = req.body
+    const senhaCript = await bcrypt.hash(cliente.senha, 10)
+    cliente.senha = senhaCript
+
+    // envio para o BD
+    const resultado = await db.pool.query(
+      `INSERT INTO cliente (
+                idConcessionária, nome, cpf, celular, email, senha
+            ) VALUES (?, ?, ?, ?, ?, ? )`,
+      [1, cliente.nome, cliente.cpf, cliente.celular,
+        cliente.email, cliente.senha]
+    )
+    res.status(201).json({ msg: "Cliente cadastrado com sucesso!" })
+  } catch (error) {
+    res.status(500).json({ erro: error.message })
+  }
+})
+
+app.post("/login", async (req, res) => {
+  try {
+    const user = req.body
+    const resultado = await db.pool.query(
+      "SELECT id, nome, email, senha FROM cliente WHERE email = ?", [user.email]
+    )
+    const dados_bd = resultado[0][0]
+    if (!dados_bd) {
+      return res.status(401).json({ msg: "Email não cadastrado!" })
+    }
+
+    const senha_valida = await bcrypt.compare(user.senha, dados_bd.senha)
+
+    if (!senha_valida) {
+      return res.status(401).json({ msg: "Credenciais inválidas!" })
+    }
+
+    const payload = {
+      id: dados_bd.id,
+      email: dados_bd.email
+    }
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1m' })
+    return res.status(200).json({ nome: dados_bd.nome, token: token })
+
+  } catch (error) {
+    res.status(500).json({ erro: error.message })
+  }
+})
+
+app.get("/clientes", async (req, res) => {
+  try {
+    const resultado = await db.pool.query(`SELECT * FROM cliente;`);
+    res.status(201).json({ resultado });
+  } catch (error) {
+    res.status(500).json({ resposta: error.message });
+  }
+});
+
+
+app.get("/clientes/perfil", autenticar, async (req, res) => {
+  const id = req.usuario.id;
+  try {
+    const resultado = await db.pool.query(
+      `SELECT * FROM cliente WHERE id = ?;`,
+      [id],
+    );
+    const perfil = resultado[0][0];
+    delete perfil.senha; // Remover a senha do perfil antes de enviar a resposta
+    res.status(200).json(perfil);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro interno do servidor" });
+  }
+});
+
+
+app.delete("/clientes/:cpf", async (req, res) => {
+  const cpf_param = req.params["cpf"];
+  try {
+    const resultado = await db.pool.query(
+      `DELETE FROM cliente WHERE cpf = ?;`,
+      [cpf_param],
+    );
+    if (!resultado[0] || resultado[0].length === 0) {
+      res.status(404).json({ erro: "Cliente não existe no banco de dados" });
+    }
+    res.status(200).json(resultado[0]);
+  } catch (error) {
+    res.status(500).json({ resposta: error.message });
+  }
+});
+
+app.put("/clientes/:cpf", async (req, res) => {
+  const cliente = req.body;
+  const cpf_param = req.params["cpf"];
+  try {
+    const resultado = await db.pool.query(
+      `UPDATE cliente SET nome = ?, cpf = ?, email = ?, celular = ?, senha = ? WHERE cpf = ?`,
+      [
+        cliente.nome,
+        cliente.cpf,
+        cliente.email,
+        cliente.celular,
+        cliente.senha,
+        cpf_param,
+      ],
+    );
+    if (!resultado[0] || resultado[0].length === 0) {
+      res.status(404).json({ erro: "Cliente não existe no banco de dados" });
+    }
+    res.status(200).json(resultado[0]);
+  } catch (error) {
+    res.status(500).json({ resposta: error.message });
+  }
+});
+
+function autenticar(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (token == null) {
+    return res.status(401).json({ erro: "Token não fornecido, usar Authorization Bearer <token>" });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, usuario) => {
+    if (err) {
+      return res.status(403).json({ erro: "Token inválido" });
+    }
+    req.usuario = usuario;
+    next();
+  });
+}
+
+app.listen(port, () => {
+  console.log("API executando na porta", port);
+});
