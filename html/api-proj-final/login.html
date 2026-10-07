@@ -123,7 +123,13 @@
                 localStorage.setItem("nome_cliente", json_resposta.nome)
                 localStorage.setItem("token", json_resposta.token)
                 window.location.href = "index.html"
-                alert("Login foi realizado com sucesso!");
+                /*Toastify({
+                    text: "Login realizado com sucesso!",
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    backgroundColor: "#a7c957"
+                }).showToast();*/
                 form_login.reset();
             } catch (error) {
                 alert(error);

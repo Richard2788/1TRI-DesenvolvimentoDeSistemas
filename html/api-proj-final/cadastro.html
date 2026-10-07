@@ -127,15 +127,22 @@
                 })
                 if (!resposta.ok) {
                     throw new Error("Erro na API: " + resposta.status);
+                    Toastify({
+                        text: "Erro ao inserir" + resposta.status,
+                        duration: 3000,
+                        gravity: "top",
+                        position: "right",
+                        backgroundColor: "#f44336"
+                    }).showToast();
+                    form_cadastro.reset();
                 }
                 Toastify({
-                    text: "Erro ao inserir clientes!",
+                    text: "Cliente cadastrado com sucesso!",
                     duration: 3000,
                     gravity: "top",
                     position: "right",
-                    backgroundColor: "#f44336"
+                    backgroundColor: "#a7c957"
                 }).showToast();
-                form_cadastro.reset();
             } catch (error) {
                 alert(error);
             } finally {
