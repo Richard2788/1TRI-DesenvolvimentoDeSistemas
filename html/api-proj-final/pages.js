@@ -17,6 +17,16 @@ function atualizar_navbar() {
     }
 }
 
+function perfil() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Você precisa estar logado para acessar o perfil.");
+        window.location.href = "login.html";
+    } else {
+        window.location.href = "perfil.html";
+    }
+}
+
 function logout() {
     localStorage.removeItem("nome_cliente")
     localStorage.removeItem("token")
