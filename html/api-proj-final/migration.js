@@ -28,7 +28,7 @@ async function inserir_clientes() {
     try {
         await db.pool.query(`
             INSERT INTO cliente (idConcessionária, nome, cpf, email, celular, senha) VALUES (
-            1,'Richard','148.211.069-57','bellusci.richard@escola.pr.gov.br','(42)99931-8655','$2b$10$FwRdGsQpZ/JtGjTxlcvc2uJwBZ8rNAV9k97rguEakZaH6bvxrNrb2');
+            1,'Richard','148.211.069-57','bellusci.richard@escola.pr.gov.br','(42)99931-8655','$2b$10$NePo4EA.hwP0K/L6mCuABOKgp5PW3yVc6D9vsyehyTC4J.9JI2Gyu');
         `);
         console.log('Clientes inseridos com sucesso!');
     } catch (error) {

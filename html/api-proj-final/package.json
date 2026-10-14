@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "./site/index.js",
   "scripts": {
-    "start": "node ./site/migration.js && node ./site/index.js"
+    "start": "node migration.js && node index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
