@@ -82,6 +82,25 @@ app.get("/clientes", async (req, res) => {
   }
 });
 
+app.get("/carros", async (req, res) => {
+  try {
+    // O mysql2/promise retorna um array onde o 1º elemento [0] são as linhas (rows)
+    const [rows] = await db.pool.query("SELECT * FROM carro;");
+
+    // Formata o array adicionando a imagem padrão caso não exista
+    const carros = rows.map(carro => ({
+      ...carro,
+      imagem: carro.imagem || "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+    }));
+
+    // Retorna status 200 (OK) com a lista de carros
+    res.status(200).json(carros);
+  } catch (error) {
+    // Exibe o erro exato no terminal do Node.js para diagnóstico
+    console.error("Erro na rota GET /carros:", error);
+    res.status(500).json({ erro: error.message });
+  }
+});
 
 app.get("/clientes/perfil", autenticar, async (req, res) => {
   const id = req.usuario.id;
