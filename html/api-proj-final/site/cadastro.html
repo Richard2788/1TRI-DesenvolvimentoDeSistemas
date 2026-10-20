@@ -63,9 +63,9 @@
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Nome do carro"
-                            aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Pesquisar</button>
+                        <input class="form-control me-2" type="search" placeholder="Nome do carro" aria-label="Search"
+                            id="inp_pesquisar" />
+                        <button class="btn btn-outline-success" type="submit" id="btn_pesquisar">Pesquisar</button>
                     </form>
                 </div>
             </div>
@@ -99,7 +99,7 @@
         <p>&copy; 2026 Loja de Carros. Todos os direitos reservados.</p>
     </footer>
     <script>
-        function pegarDados() {
+        function pegarDadosForm() {
             dados = {
                 nome: document.getElementById("nome").value,
                 cpf: document.getElementById("cpf").value,
@@ -110,14 +110,49 @@
             }
             return dados;
         }
+        function pegarDadosPesquisa() {
+            dados = {
+                busca: document.getElementById("inp_pesquisar").value,
+            }
+            return dados;
+        }
         const form_cadastro = document.getElementById("form_cadastro");
         const btn_enviar = document.getElementById("btn_enviar");
+        const btn_pesquisar = document.getElementById("btn_pesquisar");
+
+        btn_pesquisar.addEventListener("click", async (event) => {
+            event.preventDefault(); // Impede o envio do formulário
+            btn_pesquisar.disabled = true; // Desabilita o botão de envio
+            btn_pesquisar.value = "Pesquisando..."; // Altera o texto do botão de envio
+
+            dados = pegarDadosPesquisa();
+            //alert(JSON.stringify(dados));
+
+            try {
+                const resposta = await fetch("http://localhost:3000/produtos", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    query: JSON.stringify(dados)
+                })
+                if (!resposta.ok) {
+                    throw new Error("Erro na API: " + resposta.status);
+                }
+            } catch (error) {
+                alert(error);
+            } finally {
+                btn_pesquisar.value = "Pesquisar"; // Restaura o texto do botão de envio
+                btn_pesquisar.disabled = false; // Habilita o botão de envio
+            }
+        })
+
         form_cadastro.addEventListener("submit", async (event) => {
             event.preventDefault(); // Impede o envio do formulário
             btn_enviar.disabled = true; // Desabilita o botão de envio
             btn_enviar.value = "Enviando cadastro..."; // Altera o texto do botão de envio
 
-            dados = pegarDados();
+            dados = pegarDadosForm();
             //alert(JSON.stringify(dados));
 
             try {

@@ -2,7 +2,7 @@
 // npm i dotenv
 const path = require('path');
 require('dotenv').config({
-    path: path.join(__dirname, '.env')
+  path: path.join(__dirname, '.env')
 });
 // npm i express
 const express = require("express")
@@ -84,9 +84,20 @@ app.get("/clientes", async (req, res) => {
 
 app.get("/carros", async (req, res) => {
   try {
-    // O mysql2/promise retorna um array onde o 1º elemento [0] são as linhas (rows)
-    const [rows] = await db.pool.query("SELECT * FROM carro;");
 
+    // Query Parameter
+    const { busca } = req.query;
+
+    // Monta a query SQL com base nos parâmetros fornecidos
+    if (busca) {
+      const sql = `SELECT * FROM carro WHERE marca LIKE ? OR cor LIKE ? OR placa LIKE ?;`;
+      const valores = [`%${busca}%`, `%${busca}%`, `%${busca}%`];
+      const [rows] = await db.pool.query(sql, valores);
+      return res.status(200).json(rows);
+    } else {
+      const [rows] = await db.pool.query("SELECT * FROM carro;");
+      return res.status(200).json(rows);
+    }
     // Formata o array adicionando a imagem padrão caso não exista
     const carros = rows.map(carro => ({
       ...carro,
