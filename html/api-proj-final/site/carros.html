@@ -37,8 +37,9 @@
                         <li class="nav-item"><a class="nav-link" href="contato.html">Contacte-nos</a></li>
                     </ul>
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Nome do carro" aria-label="Search" />
-                        <button class="btn btn-outline-success" type="submit">Pesquisar</button>
+                        <input class="form-control me-2" type="search" placeholder="Nome do carro" aria-label="Search"
+                            id="inp_pesquisar" />
+                        <button class="btn btn-outline-success" type="submit" id="btn_pesquisar">Pesquisar</button>
                     </form>
                 </div>
             </div>
@@ -99,6 +100,47 @@
                 container.innerHTML = `<p class="col-12 text-danger">Erro ao carregar a lista de carros.</p>`;
             }
         }
+
+        function pegarDadosPesquisa() {
+            dados = {
+                busca: document.getElementById("inp_pesquisar").value,
+            }
+            return dados;
+        }
+
+        const btn_pesquisar = document.getElementById("btn_pesquisar");
+
+        btn_pesquisar.addEventListener("click", async (event) => {
+            event.preventDefault(); // Impede o envio do formulário
+            btn_pesquisar.disabled = true; // Desabilita o botão de envio
+            btn_pesquisar.value = "Pesquisando..."; // Altera o texto do botão de envio
+
+            const dados = pegarDadosPesquisa();
+            //alert(JSON.stringify(dados));
+
+            const params = dados
+            console.log(params)
+
+            const searchParams = new URLSearchParams(params);
+            console.log(searchParams)
+
+            try {
+                const resposta = await fetch(`http://localhost:3000/carros?${searchParams}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                })
+                if (!resposta.ok) {
+                    throw new Error("Erro na API: " + resposta.status);
+                }
+            } catch (error) {
+                alert(error);
+            } finally {
+                btn_pesquisar.value = "Pesquisar"; // Restaura o texto do botão de envio
+                btn_pesquisar.disabled = false; // Habilita o botão de envio
+            }
+        })
 
         // Executa a busca assim que a página é totalmente carregada
         document.addEventListener("DOMContentLoaded", carregarCarros);

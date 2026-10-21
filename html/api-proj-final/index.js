@@ -84,22 +84,26 @@ app.get("/clientes", async (req, res) => {
 
 app.get("/carros", async (req, res) => {
   try {
-
+      let sql = "SELECT * FROM carro WHERE 1=1"
+    const params = []
     // Query Parameter
-    const { busca } = req.query;
-
-    // Monta a query SQL com base nos parâmetros fornecidos
+    const { busca, ordenacao } = req.query
+    let resultado
     if (busca) {
-      const sql = `SELECT * FROM carro WHERE marca LIKE ? OR cor LIKE ? OR placa LIKE ?;`;
-      const valores = [`%${busca}%`, `%${busca}%`, `%${busca}%`];
-      const [rows] = await db.pool.query(sql, valores);
-      return res.status(200).json(rows);
-    } else {
-      const [rows] = await db.pool.query("SELECT * FROM carro;");
-      return res.status(200).json(rows);
+      sql += " AND marca LIKE ?"
+      params.push(`%${busca}%`)
     }
+    if (ordenacao) {
+      if (ordenacao == "DESC") {
+        sql += " ORDER BY id DESC"
+      } else {
+        sql += " ORDER BY id ASC"
+      }
+    }
+    resultado = await db.pool.query(sql, params)
+    res.status(200).json(resultado[0])
     // Formata o array adicionando a imagem padrão caso não exista
-    const carros = rows.map(carro => ({
+    const carros = resultado.map(carro => ({
       ...carro,
       imagem: carro.imagem || "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
     }));
