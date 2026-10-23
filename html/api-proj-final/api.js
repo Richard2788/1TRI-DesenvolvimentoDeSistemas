@@ -1,1 +1,0 @@
-let link_api = 'http://localhost:3000'

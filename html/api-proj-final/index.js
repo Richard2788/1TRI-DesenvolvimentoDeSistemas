@@ -101,9 +101,8 @@ app.get("/carros", async (req, res) => {
       }
     }
     resultado = await db.pool.query(sql, params)
-    res.status(200).json(resultado[0])
     // Formata o array adicionando a imagem padrão caso não exista
-    const carros = resultado.map(carro => ({
+    const carros = resultado[0].map(carro => ({
       ...carro,
       imagem: carro.imagem || "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
     }));

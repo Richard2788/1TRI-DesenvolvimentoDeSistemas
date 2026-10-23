@@ -1,66 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <link href="mycss.css" rel="stylesheet">
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <link href="mycss.css" rel="stylesheet" />
+    <script src="pages.js"></script>
+    <script src="api.js"></script>
+    <script src="index.js"></script>
     <title>Carros</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Ross Cars</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="carros.html">Carros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cadastro.html">Cadastro</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Conta</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" onclick="perfil()">Perfil</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="logout()">Sair</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="contato.html">Contacte-nos</a></li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Nome do carro" aria-label="Search"
-                            id="inp_pesquisar" />
-                        <button class="btn btn-outline-success" type="submit" id="btn_pesquisar">Pesquisar</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
-
-        <div class="container my-4">
-            <h1 class="mb-4">Lista de carros</h1>
-            
-            <!-- Contêiner onde os cards dos carros serão inseridos via JS -->
-            <div id="lista-carros" class="row row-cols-1 row-cols-md-3 g-4"></div>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Ross Cars</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="carros.html">Carros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="cadastro.html">Cadastro</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  >Conta</a
+                >
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="#" onclick="perfil()"
+                      >Perfil</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" onclick="logout()"
+                      >Sair</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contato.html">Contacte-nos</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Nome do carro"
+                aria-label="Search"
+                id="inp_pesquisar"
+              />
+              <button
+                class="btn btn-outline-success"
+                type="submit"
+                id="btn_pesquisar"
+              >
+                Pesquisar
+              </button>
+            </form>
+          </div>
         </div>
+      </nav>
+
+      <div class="container my-4">
+        <h1 class="mb-4">Lista de carros</h1>
+
+        <!-- Contêiner onde os cards dos carros serão inseridos via JS -->
+        <div id="lista-carros" class="row row-cols-1 row-cols-md-3 g-4"></div>
+      </div>
     </main>
 
     <footer class="text-center my-4">
-        <p>&copy; 2026 Loja de Carros. Todos os direitos reservados.</p>
+      <p>&copy; 2026 Loja de Carros. Todos os direitos reservados.</p>
     </footer>
 
     <script>
-        // Função responsável por montar o HTML do card de um carro
-        function renderizarCardCarro(carro) {
-            return `
+      // Função responsável por montar o HTML do card de um carro
+      function renderizarCardCarro(carro) {
+        return `
                 <div class="col">
                     <div class="card h-100 shadow-sm">
                         <img src="${carro.imagem}" class="card-img-top" alt="${carro.marca} ${carro.versao}" style="height: 200px; object-fit: cover;">
@@ -75,76 +126,90 @@
                     </div>
                 </div>
             `;
+      }
+
+      function aplicarCarros(carros) {
+        const container = document.getElementById("lista-carros");
+
+        if (carros.length === 0) {
+          container.innerHTML = `<p class="col-12 text-muted">Nenhum carro encontrado.</p>`;
+          return;
         }
 
-        // Função responsável por carregar a lista de carros da API
-        async function carregarCarros() {
-            const container = document.getElementById("lista-carros");
+        console.log(carros)
 
-            try {
-                const resposta = await fetch("http://localhost:3000/carros");
-                if (!resposta.ok) throw new Error("Erro ao carregar veículos.");
+        // Renderiza a lista de carros no DOM
+        container.innerHTML = carros.map(renderizarCardCarro).join("");
+      }
 
-                const carros = await resposta.json();
+      // Função responsável por carregar a lista de carros da API
+      async function carregarCarros() {
+        const container = document.getElementById("lista-carros");
 
-                if (carros.length === 0) {
-                    container.innerHTML = `<p class="col-12 text-muted">Nenhum carro encontrado.</p>`;
-                    return;
-                }
+        try {
+          const resposta = await fetch("http://localhost:3000/carros");
+          if (!resposta.ok) throw new Error("Erro ao carregar veículos.");
 
-                // Renderiza a lista de carros no DOM
-                container.innerHTML = carros.map(renderizarCardCarro).join('');
+          const carros = await resposta.json();
 
-            } catch (error) {
-                console.error("Erro na requisição:", error);
-                container.innerHTML = `<p class="col-12 text-danger">Erro ao carregar a lista de carros.</p>`;
-            }
+          aplicarCarros(carros)
+        } catch (error) {
+          console.error("Erro na requisição:", error);
+          container.innerHTML = `<p class="col-12 text-danger">Erro ao carregar a lista de carros.</p>`;
         }
+      }
 
-        function pegarDadosPesquisa() {
-            dados = {
-                busca: document.getElementById("inp_pesquisar").value,
-            }
-            return dados;
+      function pegarDadosPesquisa() {
+        dados = {
+          busca: document.getElementById("inp_pesquisar").value,
+        };
+        return dados;
+      }
+
+      const btn_pesquisar = document.getElementById("btn_pesquisar");
+
+      btn_pesquisar.addEventListener("click", async (event) => {
+        event.preventDefault(); // Impede o envio do formulário
+        btn_pesquisar.disabled = true; // Desabilita o botão de envio
+        btn_pesquisar.value = "Pesquisando..."; // Altera o texto do botão de envio
+
+        const dados = pegarDadosPesquisa();
+        //alert(JSON.stringify(dados));
+
+        const params = dados;
+        console.log(params);
+
+        const searchParams = new URLSearchParams(params);
+        console.log(searchParams);
+
+        try {
+          const resposta = await fetch(
+            `http://localhost:3000/carros?${searchParams}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+          console.log(resposta);
+
+          carros = await resposta.json()
+
+          aplicarCarros(carros)
+          if (!resposta.ok) {
+            throw new Error("Erro na API: " + resposta.status);
+          }
+        } catch (error) {
+          alert(error);
+        } finally {
+          btn_pesquisar.value = "Pesquisar"; // Restaura o texto do botão de envio
+          btn_pesquisar.disabled = false; // Habilita o botão de envio
         }
-
-        const btn_pesquisar = document.getElementById("btn_pesquisar");
-
-        btn_pesquisar.addEventListener("click", async (event) => {
-            event.preventDefault(); // Impede o envio do formulário
-            btn_pesquisar.disabled = true; // Desabilita o botão de envio
-            btn_pesquisar.value = "Pesquisando..."; // Altera o texto do botão de envio
-
-            const dados = pegarDadosPesquisa();
-            //alert(JSON.stringify(dados));
-
-            const params = dados
-            console.log(params)
-
-            const searchParams = new URLSearchParams(params);
-            console.log(searchParams)
-
-            try {
-                const resposta = await fetch(`http://localhost:3000/carros?${searchParams}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                })
-                if (!resposta.ok) {
-                    throw new Error("Erro na API: " + resposta.status);
-                }
-            } catch (error) {
-                alert(error);
-            } finally {
-                btn_pesquisar.value = "Pesquisar"; // Restaura o texto do botão de envio
-                btn_pesquisar.disabled = false; // Habilita o botão de envio
-            }
-        })
-
-        // Executa a busca assim que a página é totalmente carregada
-        document.addEventListener("DOMContentLoaded", carregarCarros);
+      });
+      
+      // Executa a busca assim que a página é totalmente carregada
+      document.addEventListener("DOMContentLoaded", carregarCarros);
     </script>
-</body>
-
+  </body>
 </html>
