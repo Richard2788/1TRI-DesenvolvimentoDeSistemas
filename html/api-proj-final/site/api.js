@@ -1,10 +1,17 @@
-let link_api = 'http://localhost:3000'
+let link_api = "http://localhost:3000";
 
-async function buscar_carros(busca = '', ordenacao = '') {
-    const resposta = await (fetch(link_api + '/carros'))
-    const resposta_json = await resposta.json()
-    if(!resposta){
-        throw new Error('Erro ao buscar carros')
+async function buscar_carros(queryParams) {
+    let rota = "/produto"
+    const queryString = queryParams.toString();
+    if (queryString){
+        rota+= "?" + queryString
     }
-    return resposta_json
+    const resposta = await fetch(link_api + rota);
+    
+    if (!resposta.ok) {
+        throw new Error("Erro ao buscar carros");
+    }
+
+    const resposta_json = await resposta.json();
+    return resposta_json;
 }
