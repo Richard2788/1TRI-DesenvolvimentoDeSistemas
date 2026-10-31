@@ -7,12 +7,12 @@ function atualizar_navbar() {
     const btn_user_name = document.getElementsByClassName("nav-link dropdown-toggle")
 
     if (token && nome) {
-        nav_unknown[0].style.display = "none"
-        btn_user_info[0].style.display = "inline"
-        btn_user_name[0].innerText = "Olá, " + nome.split(" ")[0]
+        if (nav_unknown[0]) nav_unknown[0].style.display = "none"
+        if (btn_user_info[0]) btn_user_info[0].style.display = "inline"
+        if (btn_user_name[0]) btn_user_name[0].innerText = "Olá, " + nome.split(" ")[0]
     } else {
-        nav_unknown[0].style.display = "inline"
-        btn_user_info[0].style.display = "none"
+        if (nav_unknown[0]) nav_unknown[0].style.display = "inline"
+        if (btn_user_info[0]) btn_user_info[0].style.display = "none"
 
     }
 }

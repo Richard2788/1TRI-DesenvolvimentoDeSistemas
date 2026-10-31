@@ -84,31 +84,78 @@ app.get("/clientes", async (req, res) => {
 
 app.get("/carros", async (req, res) => {
   try {
-      let sql = "SELECT * FROM carro WHERE 1=1"
+    // quantidade fixa de carros por página
+    const LIMITE_POR_PAGINA = 10;
+    let sql = "SELECT * FROM carro WHERE 1=1"
     const params = []
-    // Query Parameter
-    const { busca, ordenacao } = req.query
+    // Query Parameters
+    const { busca, categoria, ordenacao, preco_min, preco_max, pagina } = req.query
     let resultado
     if (busca) {
-      sql += " AND marca LIKE ?"
+      sql += " AND CONCAT(marca, ' ', versao) LIKE ?"
       params.push(`%${busca}%`)
     }
-    if (ordenacao) {
-      if (ordenacao == "DESC") {
-        sql += " ORDER BY id DESC"
-      } else {
-        sql += " ORDER BY id ASC"
-      }
+    if (categoria) {
+      sql += " AND marca = ?"
+      params.push(categoria)
     }
+    if (preco_min) {
+      sql += " AND preco >= ?"
+      params.push(Number(preco_min))
+    }
+    if (preco_max) {
+      sql += " AND preco <= ?"
+      params.push(Number(preco_max))
+    }
+    if (ordenacao == "menor preco") {
+      sql += " ORDER BY preco ASC"
+    } else if (ordenacao == "maior preco") {
+      sql += " ORDER BY preco DESC"
+    }
+
+    // tradução dos filtros para o COUNT da página
+    let where = "WHERE 1=1";
+    const valoresWhere = [];
+    if (busca) { where += " AND CONCAT(marca, ' ', versao) LIKE ?"; valoresWhere.push(`%${busca}%`); }
+    if (categoria) { where += " AND marca = ?"; valoresWhere.push(categoria); }
+    if (preco_min) { where += " AND preco >= ?"; valoresWhere.push(Number(preco_min)); }
+    if (preco_max) { where += " AND preco <= ?"; valoresWhere.push(Number(preco_max)); }
+
+    // total de carros que batem com os filtros (para calcular a quantidade de páginas)
+    const [totalResult] = await db.pool.query(
+      `SELECT COUNT(*) AS total FROM carro ${where}`,
+      valoresWhere
+    )
+    const total = totalResult[0].total
+    let totalPaginas = Math.max(1, Math.ceil(total / LIMITE_POR_PAGINA))
+
+    // paginação: pagina=1 -> 10 primeiros, pagina=2 -> do 11º ao 20º, etc
+    let numeroPagina = parseInt(pagina, 10)
+    if (isNaN(numeroPagina) || numeroPagina < 1 || numeroPagina > totalPaginas) {
+      numeroPagina = 1
+    }
+    const offset = (numeroPagina - 1) * LIMITE_POR_PAGINA
+
+    sql += " LIMIT ? OFFSET ?"
+    params.push(LIMITE_POR_PAGINA, offset)
     resultado = await db.pool.query(sql, params)
     // Formata o array adicionando a imagem padrão caso não exista
     const carros = resultado[0].map(carro => ({
       ...carro,
+      preco: Number(carro.preco).toFixed(2),
+      nome: `${carro.marca} ${carro.versao}`,
+      descricao: `${carro.cor} • motor ${Number(carro.motor).toFixed(1)} L • ${carro.versao}`,
       imagem: carro.imagem || "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
     }));
 
-    // Retorna status 200 (OK) com a lista de carros
-    res.status(200).json(carros);
+    // Retorna status 200 (OK) com a lista de carros + dados de paginação
+    return res.status(200).json({
+      carros: carros,
+      total: total,
+      pagina: numeroPagina,
+      totalPaginas: totalPaginas,
+      limite: LIMITE_POR_PAGINA
+    });
   } catch (error) {
     // Exibe o erro exato no terminal do Node.js para diagnóstico
     console.error("Erro na rota GET /carros:", error);

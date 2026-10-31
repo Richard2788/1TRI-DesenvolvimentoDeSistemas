@@ -1,7 +1,7 @@
 let link_api = "http://localhost:3000";
 
 async function buscar_carros(queryParams) {
-    let rota = "/produto"
+    let rota = "/carros"
     const queryString = queryParams.toString();
     if (queryString){
         rota+= "?" + queryString

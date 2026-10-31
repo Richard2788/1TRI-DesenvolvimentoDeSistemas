@@ -80,25 +80,66 @@
       <div class="container my-4">
         <main class="d-flex flex-column align-items-center" style="justify-content: flex-start; min-height: 100vh; padding-top: 20px; width: 100%;">
           <div id="busca-produtos" style="width: 100%; display: flex; justify-content: center; margin-bottom: 20px;">
-            <form style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 15px; white-space: nowrap; background-color: #ffffff; width: 100%; max-width: 900px; padding: 15px 25px; border-radius: 8px; box-sizing: border-box;">
+            <form style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; background-color: #ffffff; width: 100%; max-width: 900px; padding: 15px 25px; border-radius: 8px; box-sizing: border-box;">
               
-              <label for="busca" aria-label="Search" style="margin: 0;  line-height: 1;">Buscar:</label>
-              <input type="text" id="inp_pesquisar" class="input_texto" style="width: 280px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="busca" aria-label="Search" style="margin: 0; line-height: 1;">Buscar:</label>
+                <input type="text" id="inp_pesquisar" class="input_texto" style="width: 280px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
+              </div>
               
-              <label for="ordem" style="margin: 0; line-height: 1;">Ordenar por:</label>
-              <select id="select-ordem" name="ordem" style="width: 160px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
-                <option value="">Sem ordenação</option>
-                <option value="menor preco">Menor preço</option>
-                <option value="maior preco">Maior preço</option>
-              </select>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="ordem" style="margin: 0; line-height: 1;">Ordenar por:</label>
+                <select id="select-ordem" name="ordem" style="width: 160px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
+                  <option value="">Sem ordenação</option>
+                  <option value="menor preco">Menor preço</option>
+                  <option value="maior preco">Maior preço</option>
+                </select>
+              </div>
               
-              <input type="submit" id="btn_pesquisar" value="Buscar" onclick="carregar_carros(true)" class="btn_enviar" style="height: 38px; padding: 0 20px; margin: 0; cursor: pointer; box-sizing: border-box; vertical-align: middle;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="categoria" style="margin: 0; line-height: 1;">Categoria:</label>
+                <select id="select-categoria" name="categoria" style="width: 180px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
+                  <option value="">Todas as categorias</option>
+                  <option value="Toyota">Toyota</option>
+                  <option value="Chevrolet">Chevrolet</option>
+                  <option value="Volkswagen">Volkswagen</option>
+                  <option value="Fiat">Fiat</option>
+                  <option value="Hyundai">Hyundai</option>
+                  <option value="Honda">Honda</option>
+                  <option value="Jeep">Jeep</option>
+                  <option value="Nissan">Nissan</option>
+                  <option value="Renault">Renault</option>
+                  <option value="Peugeot">Peugeot</option>
+                  <option value="Citroën">Citroën</option>
+                  <option value="Ford">Ford</option>
+                  <option value="Caoa Chery">Caoa Chery</option>
+                  <option value="Mitsubishi">Mitsubishi</option>
+                  <option value="BMW">BMW</option>
+                  <option value="Audi">Audi</option>
+                  <option value="Volvo">Volvo</option>
+                </select>
+              </div>
+              
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="preco_min" style="margin: 0; line-height: 1;">Preço mínimo (R$):</label>
+                <input type="number" id="inp_preco_min" name="preco_min" min="0" step="1" placeholder="40000" style="width: 140px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
+              </div>
+              
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="preco_max" style="margin: 0; line-height: 1;">Preço máximo (R$):</label>
+                <input type="number" id="inp_preco_max" name="preco_max" min="0" step="1" placeholder="150000" style="width: 140px; height: 38px; padding: 6px 12px; margin: 0; box-sizing: border-box; vertical-align: middle;">
+              </div>
+              
+              <div style="display: flex; align-items: center;">
+                <input type="submit" id="btn_pesquisar" value="Buscar" class="btn_enviar" style="height: 38px; padding: 0 20px; width: auto; margin: 0; cursor: pointer; box-sizing: border-box; vertical-align: middle;">
+              </div>
               
             </form>
           </div>
           <h1 class="mb-4">Lista de carros</h1>
           <div id="lista-carros" class="row row-cols-1 row-cols-md-3 g-4"></div>
           <div id="carros" style="width: 100%;"></div>
+          <div id="paginacao" class="d-flex justify-content-center my-4" style="gap: 10px;"></div>
           
         </main>
         
