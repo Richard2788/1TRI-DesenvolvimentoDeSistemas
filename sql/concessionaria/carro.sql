@@ -2,12 +2,14 @@ CREATE TABLE carro (
     id INT PRIMARY KEY AUTO_INCREMENT,
     idSite_URL INT,
     idCompra INT,
+    preco FLOAT NOT NULL,
     marca VARCHAR(15) NOT NULL,
     cor VARCHAR(15) NOT NULL,
     placa CHAR(7) NOT NULL UNIQUE,
     chassi VARCHAR(17),
     motor FLOAT NOT NULL,
-    versao VARCHAR(15) NOT NULL
+    versao VARCHAR(15) NOT NULL,
+    imagem VARCHAR(255) NOT NULL
 );
 
 INSERT INTO
