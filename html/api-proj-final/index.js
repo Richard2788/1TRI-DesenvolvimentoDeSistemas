@@ -26,6 +26,10 @@ app.use(cors())
 // serve o site na mesma porta da API (http://localhost:<API_PORT>/)
 app.use(express.static(path.join(__dirname, "site")))
 
+app.use('/img', express.static(path.join(__dirname, "img")))
+
+const { use } = require('react');
+
 
 app.post("/cliente", async (req, res) => {
   try {
