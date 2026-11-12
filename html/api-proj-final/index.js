@@ -26,7 +26,9 @@ app.use(cors())
 // serve o site na mesma porta da API (http://localhost:<API_PORT>/)
 app.use(express.static(path.join(__dirname, "site")))
 
-app.use('/img', express.static(path.join(__dirname, "img")))
+// as fotos locais ficam em assets/img (ex.: assets/img/ty_preto_xle/1.jpg)
+// path.join(__dirname, "img") apontava para uma pasta que não existe
+app.use("/img", express.static(path.join(__dirname, "assets", "img")))
 
 const { use } = require('react');
 
@@ -79,6 +81,65 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ erro: error.message })
   }
 })
+
+app.post('comprar', autenticar, async (req, res) => {
+  try {
+    //token do cliente logado
+    const idCliente = req.usuario.id;
+    const { idCarro } = req.body;
+
+    // forma de pagamento
+    const { formaPagamento } = req.body;
+
+    // puxa a data do servidor para salvar no bd
+    const dataCompra = new Date();
+    
+    // lista de produtos (id e quantidade de cada produto) - no caso, apenas 1 carro
+    const produtos = [{ id: idCarro, quantidade: 1 }];
+    
+    // buscar por cada produto no bd
+    for (const produto of produtos) {
+      const resultado = await db.pool.query(
+        `SELECT * FROM carro WHERE id = ?;`,
+        [produto.id]
+      );
+      const carro = resultado[0][0];
+      if (!carro) {
+        return res.status(404).json({ erro: `Carro com ID ${produto.id} não encontrado.` });
+      }
+    }
+
+    // pegar o valor de cada produto, multiplicar pela quantidade e somar ao total da compra
+    let totalCompra = 0;
+    for (const produto of produtos) {
+      const resultado = await db.pool.query(
+        `SELECT preco FROM carro WHERE id = ?;`,
+        [produto.id]
+      );
+      const carro = resultado[0][0];
+      totalCompra += carro.preco * produto.quantidade;
+    }
+
+    // reduzir a quantidade de cada produto no estoque do banco de dados
+    for (const produto of produtos) {
+      await db.pool.query(
+        `UPDATE carro SET quantidade = quantidade - ? WHERE id = ?;`,
+        [produto.quantidade, produto.id]
+      );
+    }
+
+    // fazer a soma do valor total da compra e cadastrar a compra no banco de dados
+    await db.pool.query(
+      `INSERT INTO compra (idCliente, dataCompra, totalCompra, formaPagamento) VALUES (?, ?, ?, ?);`,
+      [idCliente, dataCompra, totalCompra, formaPagamento]
+    );
+
+    // retornar uma resposta de sucesso para o cliente
+    res.status(200).json({ msg: 'Compra realizada com sucesso!' });
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
 
 app.get("/clientes", async (req, res) => {
   try {
@@ -152,7 +213,7 @@ app.get("/carros", async (req, res) => {
       preco: Number(carro.preco).toFixed(2),
       nome: `${carro.marca} ${carro.versao}`,
       descricao: `${carro.cor} • motor ${Number(carro.motor).toFixed(1)} L • ${carro.versao}`,
-      imagem: carro.imagem || "https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
+      imagem: carro.imagem
     }));
 
     // Retorna status 200 (OK) com a lista de carros + dados de paginação

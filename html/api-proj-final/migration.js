@@ -110,7 +110,7 @@ async function inserir_carros() {
         // Imagens apontando para veículos específicos correspondentes às marcas
         // [marca, cor, placa, chassi, motor, versao, preco, imagem]
         const valoresCarros = [
-            ['Toyota', 'Preto', 'ABC1234', '9BWZZZ377VT004251', 2.0, 'XLE', 89900.00, '1TRI-DesenvolvimentoDeSistemas/html/api-proj-final/assets/img/ty_preto_xle/1.jpg'],
+            ['Toyota', 'Preto', 'ABC1234', '9BWZZZ377VT004251', 2.0, 'XLE', 89900.00, '​http://localhost:3000/img/ty_preto_xle/1.jpg'],
             ['Chevrolet', 'Branco', 'XYZ5678', '9BWZZZ377VT004252', 1.0, 'LTZ', 68900.00, 'https://upload.wikimedia.org/wikipedia/commons/d/dc/Chevrolet_Onix_Sedan_LTZ_1.0_Turbo_2020.jpg'],
             ['Volkswagen', 'Cinza', 'MNO9012', '9BWZZZ377VT004253', 1.4, 'Highline', 92500.00, 'https://upload.wikimedia.org/wikipedia/commons/8/87/2018_Volkswagen_Golf_SE_TSi_1.4_Front.jpg'],
             ['Fiat', 'Vermelho', 'QWE3456', '9BWZZZ377VT004254', 1.3, 'Drive', 55900.00, 'https://upload.wikimedia.org/wikipedia/commons/0/07/2018_Fiat_Argo_Drive_1.3.jpg'],
