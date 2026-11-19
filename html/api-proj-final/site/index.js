@@ -84,16 +84,27 @@ async function carregar_carros(modo) {
             const card = document.createElement("div");
             card.className = "card";
 
-            card.innerHTML = `
-                <img src="${carro.imagem}" alt="${carro.nome}">
-                <div class="nome-carro">${carro.nome}</div>
-                <div class="info">
-                    <div class="descricao">${carro.descricao}</div>
-                    <div class="preco">R$ ${carro.preco.replace(".", ",")}</div>
-                </div>
-                <button class="btn_enviar" onclick="comprar(${carro.id})">Comprar</button>
-                `;
-
+            const imagem = document.createElement("img");
+            imagem.src = carro.imagem || "";
+            imagem.alt = carro.nome;
+            const nome = document.createElement("div");
+            nome.className = "nome-carro";
+            nome.textContent = carro.nome;
+            const info = document.createElement("div");
+            info.className = "info";
+            const descricao = document.createElement("div");
+            descricao.className = "descricao";
+            descricao.textContent = carro.descricao;
+            const preco = document.createElement("div");
+            preco.className = "preco";
+            preco.textContent = "R$ " + carro.preco.replace(".", ",");
+            info.append(descricao, preco);
+            const botao = document.createElement("button");
+            botao.className = "btn_enviar";
+            botao.type = "button";
+            botao.textContent = "Adicionar ao carrinho";
+            botao.addEventListener("click", () => adicionarAoCarrinho(carro));
+            card.append(imagem, nome, info, botao);
             container.appendChild(card);
         });
 
