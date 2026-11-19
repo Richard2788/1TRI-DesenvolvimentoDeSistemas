@@ -34,3 +34,33 @@ function logout() {
 }
 
 window.addEventListener("DOMContentLoaded", atualizar_navbar)
+
+// Carrinho persistido no navegador. O servidor valida IDs e preços ao finalizar.
+function obterCarrinho() {
+    try {
+        const itens = JSON.parse(localStorage.getItem("carrinho_compras") || "[]");
+        return Array.isArray(itens) ? itens : [];
+    } catch {
+        return [];
+    }
+}
+
+function adicionarAoCarrinho(carro) {
+    const carrinho = obterCarrinho();
+    if (carrinho.some(item => Number(item.idCarro) === Number(carro.id))) {
+        alert("Este veículo já está no carrinho.");
+        return;
+    }
+    carrinho.push({
+        idCarro: Number(carro.id),
+        nome: String(carro.nome || ""),
+        preco: Number(carro.preco),
+        imagem: String(carro.imagem || "")
+    });
+    localStorage.setItem("carrinho_compras", JSON.stringify(carrinho));
+    alert("Veículo adicionado ao carrinho!");
+}
+
+function abrirCarrinho() {
+    window.location.href = "carrinho.html";
+}
