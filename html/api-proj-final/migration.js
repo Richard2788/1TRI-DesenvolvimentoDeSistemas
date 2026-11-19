@@ -54,31 +54,18 @@ async function criar_estrutura() {
         await gerenciarTabela('compra', `CREATE TABLE compra (
             id INT NOT NULL AUTO_INCREMENT,
             idCliente INT NOT NULL,
-            idVendedor INT NOT NULL,
-            idConcessionária INT NOT NULL,
             dataCompra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            tipo_pagamento VARCHAR(40) NOT NULL,
-            descricao VARCHAR(255) NOT NULL,
+            totalCompra DECIMAL(10,2) NOT NULL,
+            formaPagamento VARCHAR(40) NOT NULL,
+            descricao VARCHAR(255),
 
             PRIMARY KEY (id),
 
             INDEX idx_compra_cliente_data (idCliente, dataCompra),
-            INDEX idx_compra_vendedor (idVendedor),
-            INDEX idx_compra_concessionaria (idConcessionária),
 
             CONSTRAINT fk_compra_cliente
                 FOREIGN KEY (idCliente)
                 REFERENCES cliente(id)
-                ON UPDATE CASCADE ON DELETE RESTRICT,
-
-            CONSTRAINT fk_compra_vendedor
-                FOREIGN KEY (idVendedor)
-                REFERENCES vendedor(idVendedor)
-                ON UPDATE CASCADE ON DELETE RESTRICT,
-
-            CONSTRAINT fk_compra_concessionaria
-                FOREIGN KEY (idConcessionária)
-                REFERENCES concessionária(idConcessionária)
                 ON UPDATE CASCADE ON DELETE RESTRICT
 
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`);
