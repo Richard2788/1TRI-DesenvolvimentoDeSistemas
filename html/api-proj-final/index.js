@@ -74,7 +74,7 @@ app.post("/login", async (req, res) => {
       id: dados_bd.id,
       email: dados_bd.email
     }
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1m' })
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
     return res.status(200).json({ nome: dados_bd.nome, token: token })
 
   } catch (error) {
@@ -82,62 +82,122 @@ app.post("/login", async (req, res) => {
   }
 })
 
-app.post('comprar', autenticar, async (req, res) => {
+// Finaliza o carrinho enviado pelo navegador. Os preços são sempre lidos do banco.
+app.post("/compras", autenticar, async (req, res) => {
+  const { itens, formaPagamento } = req.body || {};
+  if (!Array.isArray(itens) || itens.length === 0 || itens.length > 25) {
+    return res.status(400).json({ erro: "Informe entre 1 e 25 veículos no carrinho." });
+  }
+  if (!formaPagamento || typeof formaPagamento !== "string" || formaPagamento.length > 40) {
+    return res.status(400).json({ erro: "Informe uma forma de pagamento válida." });
+  }
+
+  if (itens.some(item => !item || typeof item !== "object")) {
+    return res.status(400).json({ erro: "O carrinho contém um item inválido." });
+  }
+  const formasPermitidas = ["PIX", "Cartão de crédito", "Financiamento", "À vista"];
+  if (!formasPermitidas.includes(formaPagamento)) {
+    return res.status(400).json({ erro: "Forma de pagamento não permitida." });
+  }
+  const ids = itens.map(item => Number(item.idCarro));
+  if (ids.some(id => !Number.isSafeInteger(id) || id <= 0) || new Set(ids).size !== ids.length) {
+    return res.status(400).json({ erro: "O carrinho contém IDs inválidos ou repetidos." });
+  }
+
+  let connection;
   try {
-    //token do cliente logado
-    const idCliente = req.usuario.id;
-    const { idCarro } = req.body;
+    connection = await db.pool.getConnection();
+    await connection.beginTransaction();
 
-    // forma de pagamento
-    const { formaPagamento } = req.body;
-
-    // puxa a data do servidor para salvar no bd
-    const dataCompra = new Date();
-    
-    // lista de produtos (id e quantidade de cada produto) - no caso, apenas 1 carro
-    const produtos = [{ id: idCarro, quantidade: 1 }];
-    
-    // buscar por cada produto no bd
-    for (const produto of produtos) {
-      const resultado = await db.pool.query(
-        `SELECT * FROM carro WHERE id = ?;`,
-        [produto.id]
-      );
-      const carro = resultado[0][0];
-      if (!carro) {
-        return res.status(404).json({ erro: `Carro com ID ${produto.id} não encontrado.` });
-      }
+    // FOR UPDATE impede que dois clientes comprem o mesmo veículo simultaneamente.
+    const [carros] = await connection.query(
+      "SELECT id, marca, versao, preco, idCompra FROM carro WHERE id IN (?) FOR UPDATE",
+      [ids]
+    );
+    if (carros.length !== ids.length) {
+      await connection.rollback();
+      return res.status(404).json({ erro: "Um ou mais veículos não foram encontrados." });
+    }
+    const indisponiveis = carros.filter(carro => carro.idCompra !== null);
+    if (indisponiveis.length) {
+      await connection.rollback();
+      return res.status(409).json({ erro: "Um ou mais veículos já foram vendidos. Atualize seu carrinho." });
     }
 
-    // pegar o valor de cada produto, multiplicar pela quantidade e somar ao total da compra
-    let totalCompra = 0;
-    for (const produto of produtos) {
-      const resultado = await db.pool.query(
-        `SELECT preco FROM carro WHERE id = ?;`,
-        [produto.id]
-      );
-      const carro = resultado[0][0];
-      totalCompra += carro.preco * produto.quantidade;
-    }
-
-    // reduzir a quantidade de cada produto no estoque do banco de dados
-    for (const produto of produtos) {
-      await db.pool.query(
-        `UPDATE carro SET quantidade = quantidade - ? WHERE id = ?;`,
-        [produto.quantidade, produto.id]
-      );
-    }
-
-    // fazer a soma do valor total da compra e cadastrar a compra no banco de dados
-    await db.pool.query(
-      `INSERT INTO compra (idCliente, dataCompra, totalCompra, formaPagamento) VALUES (?, ?, ?, ?);`,
-      [idCliente, dataCompra, totalCompra, formaPagamento]
+    const totalCompra = carros.reduce((total, carro) => total + Number(carro.preco), 0);
+    const [compra] = await connection.query(
+      "INSERT INTO compra (idCliente, dataCompra, totalCompra, formaPagamento) VALUES (?, NOW(), ?, ?)",
+      [req.usuario.id, totalCompra.toFixed(2), formaPagamento]
+    );
+    const valoresItens = carros.map(carro => [compra.insertId, carro.id, carro.preco]);
+    await connection.query(
+      "INSERT INTO compra_item (idCompra, idCarro, precoUnitario) VALUES ?",
+      [valoresItens]
+    );
+    await connection.query(
+      "UPDATE carro SET idCompra = ? WHERE id IN (?) AND idCompra IS NULL",
+      [compra.insertId, ids]
     );
 
-    // retornar uma resposta de sucesso para o cliente
-    res.status(200).json({ msg: 'Compra realizada com sucesso!' });
+    await connection.commit();
+    return res.status(201).json({
+      msg: "Compra realizada com sucesso!",
+      idCompra: compra.insertId,
+      totalCompra: totalCompra.toFixed(2)
+    });
   } catch (error) {
-    res.status(500).json({ erro: error.message });
+    if (connection) await connection.rollback();
+    console.error("Erro ao finalizar compra:", error);
+    return res.status(500).json({ erro: "Não foi possível finalizar a compra." });
+  } finally {
+    if (connection) connection.release();
+  }
+});
+
+// Retorna somente as compras pertencentes ao usuário autenticado.
+app.get("/compras", autenticar, async (req, res) => {
+  try {
+    const [linhas] = await db.pool.query(
+      `SELECT c.id AS idCompra, c.dataCompra, c.totalCompra, c.formaPagamento,
+              ci.idCarro, ci.precoUnitario, ca.marca, ca.versao, ca.cor, ca.placa, ca.imagem
+         FROM compra c
+         LEFT JOIN compra_item ci ON ci.idCompra = c.id
+         LEFT JOIN carro ca ON ca.id = ci.idCarro
+        WHERE c.idCliente = ?
+        ORDER BY c.dataCompra DESC, c.id DESC`,
+      [req.usuario.id]
+    );
+    const compras = [];
+    const porId = new Map();
+    for (const linha of linhas) {
+      let compra = porId.get(linha.idCompra);
+      if (!compra) {
+        compra = {
+          id: linha.idCompra,
+          dataCompra: linha.dataCompra,
+          totalCompra: Number(linha.totalCompra),
+          formaPagamento: linha.formaPagamento,
+          itens: []
+        };
+        porId.set(linha.idCompra, compra);
+        compras.push(compra);
+      }
+      if (linha.idCarro !== null) {
+        compra.itens.push({
+          idCarro: linha.idCarro,
+          marca: linha.marca,
+          versao: linha.versao,
+          cor: linha.cor,
+          placa: linha.placa,
+          imagem: linha.imagem,
+          precoUnitario: Number(linha.precoUnitario)
+        });
+      }
+    }
+    return res.status(200).json({ compras });
+  } catch (error) {
+    console.error("Erro ao consultar compras:", error);
+    return res.status(500).json({ erro: "Não foi possível consultar suas compras." });
   }
 });
 
@@ -154,7 +214,7 @@ app.get("/carros", async (req, res) => {
   try {
     // quantidade fixa de carros por página
     const LIMITE_POR_PAGINA = 10;
-    let sql = "SELECT * FROM carro WHERE 1=1"
+    let sql = "SELECT * FROM carro WHERE idCompra IS NULL"
     const params = []
     // Query Parameters
     const { busca, categoria, ordenacao, preco_min, preco_max, pagina } = req.query
@@ -182,7 +242,7 @@ app.get("/carros", async (req, res) => {
     }
 
     // tradução dos filtros para o COUNT da página
-    let where = "WHERE 1=1";
+    let where = "WHERE idCompra IS NULL";
     const valoresWhere = [];
     if (busca) { where += " AND CONCAT(marca, ' ', versao) LIKE ?"; valoresWhere.push(`%${busca}%`); }
     if (categoria) { where += " AND marca = ?"; valoresWhere.push(categoria); }

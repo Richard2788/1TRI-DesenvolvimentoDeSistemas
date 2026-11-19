@@ -1,44 +1,24 @@
 const db = require('./db');
 
-// Função auxiliar reutilizável para verificar, remover se necessário e criar tabelas
+// Cria tabelas somente quando necessário. Nunca apaga dados existentes.
 async function gerenciarTabela(nomeTabela, sqlCreate) {
-    // 1. Verifica se a tabela existe no banco de dados atual
-    const [tabelas] = await db.pool.query(`
-        SELECT 1 
-        FROM information_schema.tables 
-        WHERE table_schema = DATABASE() 
-          AND table_name = ?
-    `, [nomeTabela]);
-
-    let deveCriar = true;
-
-    // 2. Se a tabela existe, checa se possui registros
-    if (tabelas.length > 0) {
-        const [rows] = await db.pool.query(`SELECT COUNT(*) AS total FROM ??`, [nomeTabela]);
-        
-        if (rows[0].total > 0) {
-            // Se tem registros, remove a tabela antiga
-            await db.pool.query(`DROP TABLE ??`, [nomeTabela]);
-            console.log(`Tabela antiga "${nomeTabela}" com registros detectada e removida.`);
-        } else {
-            // Se a tabela já existe e está vazia, ignora a recriação
-            deveCriar = false;
-            await db.pool.query(`TRUNCATE TABLE ??`, [nomeTabela]);
-            console.log(`Tabela "${nomeTabela}" já existe e está vazia. Apenas IDs corrigidos.`);
-        }
-    }
-
-    // 3. Cria a tabela se não existia ou se foi removida por conter registros
-    if (deveCriar) {
+    const [tabelas] = await db.pool.query(
+        `SELECT 1 FROM information_schema.tables
+         WHERE table_schema = DATABASE() AND table_name = ?`,
+        [nomeTabela]
+    );
+    if (tabelas.length === 0) {
         await db.pool.query(sqlCreate);
-        console.log(`Estrutura da tabela "${nomeTabela}" criada com sucesso!`);
+        console.log(`Tabela "${nomeTabela}" criada.`);
+    } else {
+        console.log(`Tabela "${nomeTabela}" já existe; dados preservados.`);
     }
 }
 
 async function criar_estrutura() {
     try {
         // Tabela cliente
-        await   gerenciarTabela('cliente', `
+        await gerenciarTabela('cliente', `
             CREATE TABLE cliente (
                 id INT(11) NOT NULL AUTO_INCREMENT,
                 idConcessionária INT(11) NOT NULL,
@@ -51,7 +31,7 @@ async function criar_estrutura() {
                 UNIQUE KEY email (email),
                 UNIQUE KEY cpf (cpf)
             ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-            TRUNCATE TABLE cliente;
+
         `);
 
         // Tabela carro com a coluna 'imagem'
@@ -68,8 +48,57 @@ async function criar_estrutura() {
                 versao VARCHAR(15) NOT NULL,
                 preco DECIMAL(10,2) NOT NULL,
                 imagem VARCHAR(255)
-            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-            TRUNCATE TABLE carro;
+            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;`);
+
+        // Tabela de compras: registra o cliente, a data, o total e o pagamento.
+        await gerenciarTabela('compra', `CREATE TABLE compra (
+            id INT NOT NULL AUTO_INCREMENT,
+            idCliente INT NOT NULL,
+            idVendedor INT NOT NULL,
+            idConcessionária INT NOT NULL,
+            dataCompra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            tipo_pagamento VARCHAR(40) NOT NULL,
+            descricao VARCHAR(255) NOT NULL,
+
+            PRIMARY KEY (id),
+
+            INDEX idx_compra_cliente_data (idCliente, dataCompra),
+            INDEX idx_compra_vendedor (idVendedor),
+            INDEX idx_compra_concessionaria (idConcessionária),
+
+            CONSTRAINT fk_compra_cliente
+                FOREIGN KEY (idCliente)
+                REFERENCES cliente(id)
+                ON UPDATE CASCADE ON DELETE RESTRICT,
+
+            CONSTRAINT fk_compra_vendedor
+                FOREIGN KEY (idVendedor)
+                REFERENCES vendedor(idVendedor)
+                ON UPDATE CASCADE ON DELETE RESTRICT,
+
+            CONSTRAINT fk_compra_concessionaria
+                FOREIGN KEY (idConcessionária)
+                REFERENCES concessionária(idConcessionária)
+                ON UPDATE CASCADE ON DELETE RESTRICT
+
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`);
+
+        // Itens vinculam cada veículo à compra e guardam o preço praticado.
+        await gerenciarTabela('compra_item', `
+            CREATE TABLE compra_item (
+                id INT NOT NULL AUTO_INCREMENT,
+                idCompra INT NOT NULL,
+                idCarro INT NOT NULL,
+                precoUnitario DECIMAL(10,2) NOT NULL,
+                PRIMARY KEY (id),
+                UNIQUE KEY uk_compra_item_carro (idCarro),
+                CONSTRAINT fk_item_compra
+                    FOREIGN KEY (idCompra) REFERENCES compra(id)
+                    ON UPDATE CASCADE ON DELETE CASCADE,
+                CONSTRAINT fk_item_carro
+                    FOREIGN KEY (idCarro) REFERENCES carro(id)
+                    ON UPDATE CASCADE ON DELETE RESTRICT
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
         `);
 
     } catch (error) {
@@ -85,11 +114,11 @@ async function inserir_clientes() {
             VALUES (?, ?, ?, ?, ?, ?)
         `;
         const valores = [
-            1, 
-            'Richard', 
-            '148.211.069-57', 
-            'bellusci.richard@escola.pr.gov.br', 
-            '(42)99931-8655', 
+            1,
+            'Richard',
+            '148.211.069-57',
+            'bellusci.richard@escola.pr.gov.br',
+            '(42)99931-8655',
             '$2b$10$NePo4EA.hwP0K/L6mCuABOKgp5PW3yVc6D9vsyehyTC4J.9JI2Gyu'
         ];
 
@@ -106,7 +135,7 @@ async function inserir_carros() {
             INSERT INTO carro (marca, cor, placa, chassi, motor, versao, preco, imagem) 
             VALUES ?
         `;
-        
+
         // Imagens apontando para veículos específicos correspondentes às marcas
         // [marca, cor, placa, chassi, motor, versao, preco, imagem]
         const valoresCarros = [

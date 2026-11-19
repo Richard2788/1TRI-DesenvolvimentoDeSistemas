@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minhas compras - Ross Cars</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"></head>
+<body class="container py-4"><nav class="mb-4"><a href="carros.html">Veículos</a> · <a href="carrinho.html">Carrinho</a></nav>
+<h1>Minhas compras</h1><div id="historico" class="mt-4">Carregando...</div>
+<script src="config.js"></script><script>
+(async()=>{
+ const area=document.getElementById("historico"), token=localStorage.getItem("token");
+ if(!token){area.textContent="Faça login para consultar suas compras.";return;}
+ try{
+  const r=await fetch((window.link_api||location.origin)+"/compras",{headers:{Authorization:"Bearer "+token}});
+  const d=await r.json(); if(!r.ok) throw new Error(d.erro||"Não foi possível carregar.");
+  area.replaceChildren();
+  if(!d.compras.length){area.textContent="Você ainda não realizou compras.";return;}
+  d.compras.forEach(c=>{
+   const card=document.createElement("section");card.className="card p-3 mb-3";
+   const titulo=document.createElement("h2");titulo.className="h5";
+   titulo.textContent="Compra #"+c.id+" — "+new Date(c.dataCompra).toLocaleString("pt-BR");
+   const pagamento=document.createElement("p");pagamento.textContent="Pagamento: "+c.formaPagamento;
+   const itens=document.createElement("ul");
+   c.itens.forEach(i=>{const li=document.createElement("li");li.textContent=i.marca+" "+i.versao+" — "+Number(i.precoUnitario).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});itens.append(li);});
+   const total=document.createElement("strong");total.textContent="Total: "+Number(c.totalCompra).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+   card.append(titulo,pagamento,itens,total);area.append(card);
+  });
+ }catch(e){area.textContent=e.message;}
+})();
+</script></body></html>
