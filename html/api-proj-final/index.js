@@ -92,7 +92,14 @@ app.post("/compras", autenticar, async (req, res) => {
     return res.status(400).json({ erro: "Informe uma forma de pagamento válida." });
   }
 
-  if (itens.some(item => !item || typeof item !== "object")) {\n    return res.status(400).json({ erro: "O carrinho contém um item inválido." });\n  }\n  const formasPermitidas = ["PIX", "Cartão de crédito", "Financiamento", "À vista"];\n  if (!formasPermitidas.includes(formaPagamento)) {\n    return res.status(400).json({ erro: "Forma de pagamento não permitida." });\n  }\n  const ids = itens.map(item => Number(item.idCarro));
+  if (itens.some(item => !item || typeof item !== "object")) {
+    return res.status(400).json({ erro: "O carrinho contém um item inválido." });
+  }
+  const formasPermitidas = ["PIX", "Cartão de crédito", "Financiamento", "À vista"];
+  if (!formasPermitidas.includes(formaPagamento)) {
+    return res.status(400).json({ erro: "Forma de pagamento não permitida." });
+  }
+  const ids = itens.map(item => Number(item.idCarro));
   if (ids.some(id => !Number.isSafeInteger(id) || id <= 0) || new Set(ids).size !== ids.length) {
     return res.status(400).json({ erro: "O carrinho contém IDs inválidos ou repetidos." });
   }
