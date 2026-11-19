@@ -1,37 +1,17 @@
 const db = require('./db');
 
-// Função auxiliar reutilizável para verificar, remover se necessário e criar tabelas
+// Cria tabelas somente quando necessário. Nunca apaga dados existentes.
 async function gerenciarTabela(nomeTabela, sqlCreate) {
-    // 1. Verifica se a tabela existe no banco de dados atual
-    const [tabelas] = await db.pool.query(`
-        SELECT 1 
-        FROM information_schema.tables 
-        WHERE table_schema = DATABASE() 
-          AND table_name = ?
-    `, [nomeTabela]);
-
-    let deveCriar = true;
-
-    // 2. Se a tabela existe, checa se possui registros
-    if (tabelas.length > 0) {
-        const [rows] = await db.pool.query(`SELECT COUNT(*) AS total FROM ??`, [nomeTabela]);
-        
-        if (rows[0].total > 0) {
-            // Se tem registros, remove a tabela antiga
-            await db.pool.query(`DROP TABLE ??`, [nomeTabela]);
-            console.log(`Tabela antiga "${nomeTabela}" com registros detectada e removida.`);
-        } else {
-            // Se a tabela já existe e está vazia, ignora a recriação
-            deveCriar = false;
-            await db.pool.query(`TRUNCATE TABLE ??`, [nomeTabela]);
-            console.log(`Tabela "${nomeTabela}" já existe e está vazia. Apenas IDs corrigidos.`);
-        }
-    }
-
-    // 3. Cria a tabela se não existia ou se foi removida por conter registros
-    if (deveCriar) {
+    const [tabelas] = await db.pool.query(
+        `SELECT 1 FROM information_schema.tables
+         WHERE table_schema = DATABASE() AND table_name = ?`,
+        [nomeTabela]
+    );
+    if (tabelas.length === 0) {
         await db.pool.query(sqlCreate);
-        console.log(`Estrutura da tabela "${nomeTabela}" criada com sucesso!`);
+        console.log(`Tabela "${nomeTabela}" criada.`);
+    } else {
+        console.log(`Tabela "${nomeTabela}" já existe; dados preservados.`);
     }
 }
 
