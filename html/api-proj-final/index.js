@@ -207,7 +207,7 @@ app.get("/carros", async (req, res) => {
   try {
     // quantidade fixa de carros por página
     const LIMITE_POR_PAGINA = 10;
-    let sql = "SELECT * FROM carro WHERE 1=1"
+    let sql = "SELECT * FROM carro WHERE idCompra IS NULL"
     const params = []
     // Query Parameters
     const { busca, categoria, ordenacao, preco_min, preco_max, pagina } = req.query
@@ -235,7 +235,7 @@ app.get("/carros", async (req, res) => {
     }
 
     // tradução dos filtros para o COUNT da página
-    let where = "WHERE 1=1";
+    let where = "WHERE idCompra IS NULL";
     const valoresWhere = [];
     if (busca) { where += " AND CONCAT(marca, ' ', versao) LIKE ?"; valoresWhere.push(`%${busca}%`); }
     if (categoria) { where += " AND marca = ?"; valoresWhere.push(categoria); }
