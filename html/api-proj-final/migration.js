@@ -31,7 +31,7 @@ async function criar_estrutura() {
                 UNIQUE KEY email (email),
                 UNIQUE KEY cpf (cpf)
             ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-            TRUNCATE TABLE cliente;
+
         `);
 
         // Tabela carro com a coluna 'imagem'
@@ -49,7 +49,7 @@ async function criar_estrutura() {
                 preco DECIMAL(10,2) NOT NULL,
                 imagem VARCHAR(255)
             ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-            TRUNCATE TABLE carro;
+
         `);
 
     } catch (error) {
