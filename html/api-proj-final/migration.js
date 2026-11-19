@@ -18,7 +18,7 @@ async function gerenciarTabela(nomeTabela, sqlCreate) {
 async function criar_estrutura() {
     try {
         // Tabela cliente
-        await   gerenciarTabela('cliente', `
+        await gerenciarTabela('cliente', `
             CREATE TABLE cliente (
                 id INT(11) NOT NULL AUTO_INCREMENT,
                 idConcessionária INT(11) NOT NULL,
@@ -48,25 +48,40 @@ async function criar_estrutura() {
                 versao VARCHAR(15) NOT NULL,
                 preco DECIMAL(10,2) NOT NULL,
                 imagem VARCHAR(255)
-            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-        `);
+            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;`);
 
         // Tabela de compras: registra o cliente, a data, o total e o pagamento.
-        await gerenciarTabela('compra', `
-            CREATE TABLE compra (
-                id INT NOT NULL AUTO_INCREMENT,
-                idCliente INT NOT NULL,
-                dataCompra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                totalCompra DECIMAL(12,2) NOT NULL,
-                formaPagamento VARCHAR(40) NOT NULL,
-                PRIMARY KEY (id),
-                INDEX idx_compra_cliente_data (idCliente, dataCompra),
-                CONSTRAINT fk_compra_cliente
-                    FOREIGN KEY (idCliente) REFERENCES cliente(id)
-                    ON UPDATE CASCADE ON DELETE RESTRICT
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-        `);
+        await gerenciarTabela('compra', `CREATE TABLE compra (
+            id INT NOT NULL AUTO_INCREMENT,
+            idCliente INT NOT NULL,
+            idVendedor INT NOT NULL,
+            idConcessionária INT NOT NULL,
+            dataCompra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            tipo_pagamento VARCHAR(40) NOT NULL,
+            descricao VARCHAR(255) NOT NULL,
+
+            PRIMARY KEY (id),
+
+            INDEX idx_compra_cliente_data (idCliente, dataCompra),
+            INDEX idx_compra_vendedor (idVendedor),
+            INDEX idx_compra_concessionaria (idConcessionária),
+
+            CONSTRAINT fk_compra_cliente
+                FOREIGN KEY (idCliente)
+                REFERENCES cliente(id)
+                ON UPDATE CASCADE ON DELETE RESTRICT,
+
+            CONSTRAINT fk_compra_vendedor
+                FOREIGN KEY (idVendedor)
+                REFERENCES vendedor(idVendedor)
+                ON UPDATE CASCADE ON DELETE RESTRICT,
+
+            CONSTRAINT fk_compra_concessionaria
+                FOREIGN KEY (idConcessionária)
+                REFERENCES concessionária(idConcessionária)
+                ON UPDATE CASCADE ON DELETE RESTRICT
+
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`);
 
         // Itens vinculam cada veículo à compra e guardam o preço praticado.
         await gerenciarTabela('compra_item', `
@@ -99,11 +114,11 @@ async function inserir_clientes() {
             VALUES (?, ?, ?, ?, ?, ?)
         `;
         const valores = [
-            1, 
-            'Richard', 
-            '148.211.069-57', 
-            'bellusci.richard@escola.pr.gov.br', 
-            '(42)99931-8655', 
+            1,
+            'Richard',
+            '148.211.069-57',
+            'bellusci.richard@escola.pr.gov.br',
+            '(42)99931-8655',
             '$2b$10$NePo4EA.hwP0K/L6mCuABOKgp5PW3yVc6D9vsyehyTC4J.9JI2Gyu'
         ];
 
@@ -120,7 +135,7 @@ async function inserir_carros() {
             INSERT INTO carro (marca, cor, placa, chassi, motor, versao, preco, imagem) 
             VALUES ?
         `;
-        
+
         // Imagens apontando para veículos específicos correspondentes às marcas
         // [marca, cor, placa, chassi, motor, versao, preco, imagem]
         const valoresCarros = [
