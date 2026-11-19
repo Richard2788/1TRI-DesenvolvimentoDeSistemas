@@ -52,6 +52,40 @@ async function criar_estrutura() {
 
         `);
 
+        // Tabela de compras: registra o cliente, a data, o total e o pagamento.
+        await gerenciarTabela('compra', `
+            CREATE TABLE compra (
+                id INT NOT NULL AUTO_INCREMENT,
+                idCliente INT NOT NULL,
+                dataCompra DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                totalCompra DECIMAL(12,2) NOT NULL,
+                formaPagamento VARCHAR(40) NOT NULL,
+                PRIMARY KEY (id),
+                INDEX idx_compra_cliente_data (idCliente, dataCompra),
+                CONSTRAINT fk_compra_cliente
+                    FOREIGN KEY (idCliente) REFERENCES cliente(id)
+                    ON UPDATE CASCADE ON DELETE RESTRICT
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+        `);
+
+        // Itens vinculam cada veículo à compra e guardam o preço praticado.
+        await gerenciarTabela('compra_item', `
+            CREATE TABLE compra_item (
+                id INT NOT NULL AUTO_INCREMENT,
+                idCompra INT NOT NULL,
+                idCarro INT NOT NULL,
+                precoUnitario DECIMAL(10,2) NOT NULL,
+                PRIMARY KEY (id),
+                UNIQUE KEY uk_compra_item_carro (idCarro),
+                CONSTRAINT fk_item_compra
+                    FOREIGN KEY (idCompra) REFERENCES compra(id)
+                    ON UPDATE CASCADE ON DELETE CASCADE,
+                CONSTRAINT fk_item_carro
+                    FOREIGN KEY (idCarro) REFERENCES carro(id)
+                    ON UPDATE CASCADE ON DELETE RESTRICT
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+        `);
+
     } catch (error) {
         console.error('Erro ao criar estrutura:', error);
         throw error;
